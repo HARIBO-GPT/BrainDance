@@ -1,9 +1,9 @@
 import express from 'express'
 import { tokenToUid } from '../auth/auth';
-import { postProject } from '../Project/ProjectController';
+import { postProject, getProjects } from '../Project/ProjectController';
 
 export const ProjectRouter = express.Router();
 
-// ProjectRouter.route('/:uid').get(tokenToUid, getUserInfo);
+ProjectRouter.route('/').get(tokenToUid, getProjects);
 ProjectRouter.route('/').post(tokenToUid, postProject);
 

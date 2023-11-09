@@ -24,3 +24,18 @@ export const insertProjectRow = async (data: PostProjectObjectType): Promise<num
         throw err;
     }
 }
+
+export const selectProjectRow = async (uid: string): Promise<ProjectHomeRow[]> => {
+    try {
+        const connection: PoolConnection = await pool.getConnection();
+        const selectQuery: string = 'SELECT id, projectTitle, createdAt, uid FROM Project where uid = ?';
+        const [projectRows]: [ProjectHomeRow[], FieldPacket[]] = await connection.execute(selectQuery, [uid]);
+        connection.release();
+
+        return projectRows;
+
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+}

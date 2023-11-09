@@ -1,5 +1,6 @@
 import { type FieldPacket, type PoolConnection } from "mysql2/promise";
 import { type ResultSetHeader } from '../interface/response';
+import { type KeywordRow } from '../interface/keyword';
 import pool from '../database/database';
 
 export const insertKeywordRow = async (projectId: number, keyword: string): Promise<void> => {
@@ -15,6 +16,26 @@ export const insertKeywordRow = async (projectId: number, keyword: string): Prom
             projectId
         ]);
         connection.release();
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+export const selectKeywordRows = async (projectId: number): Promise<string[]> => {
+    try {
+        const connection: PoolConnection = await pool.getConnection();
+        const selectQuery: string = 'SELECT keyword FROM Keyword where project_id = ?';
+        const [keywordRows]: [KeywordRow[], FieldPacket[]] = await connection.execute(selectQuery, [projectId]);
+        connection.release();
+
+        const response: string[] = [];
+        for (keywordRow of keywordRows){
+            response.push(keywordRow.keyword);
+        }
+
+        return response;
+        
     } catch(err) {
         console.log(err);
         throw err;

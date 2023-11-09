@@ -6,3 +6,18 @@ export interface PostProjectObjectType {
     originText: string
     summaryText: string
 }
+
+export interface GetProjectsObjectType {
+    projectId: number
+    projectTitle: string
+    createdAt: string
+    keyword: string[] // projectId
+    displayName: string // uid -> project -> another uid
+}
+
+export interface ProjectHomeRow extends RowDataPacket {
+    id: number
+    projectTitle: string
+    createdAt: string
+    uid: string
+}

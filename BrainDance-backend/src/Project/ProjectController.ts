@@ -1,9 +1,9 @@
 import { admin } from "../auth/firebase";
 import { type ApiResponse } from "../interface/response";
-import { type PostProjectObjectType } from "../interface/project";
+import { type PostProjectObjectType, type GetProjectsObjectType } from "../interface/project";
 import { type UidToUserInfo, type UidRequest } from "../interface/user";
 import { type Response} from 'express';
-import { insertProject } from '../Project/ProjectService';
+import { insertProject, selectProject } from '../Project/ProjectService';
 
 export const postProject = async (req: UidRequest, res: Response): Promise<void> => {
     try {
@@ -50,6 +50,45 @@ export const postProject = async (req: UidRequest, res: Response): Promise<void>
             };
             res.status(200).json(response);
 
+        }
+    } catch(err) {
+        console.log(err);
+        const response: ApiResponse = {
+            ok: false,
+            msg: "INTERNAL SERVER ERROR"
+        }
+        res.send(response);
+        throw err;
+    }
+}
+
+export const getProjects = async (req: UidRequest, res: Response): Promise<void> => {
+    try {
+        if (typeof req.uid === 'string'){
+            const uid: string = req.uid;
+            let userInfo: UidToUserInfo = {};
+
+            try {
+                userInfo = await admin.auth().getUser(uid);
+            } 
+            catch (err) {
+                const response: ApiResponse = {
+                    ok: false,
+                    msg: '파이어베이스에 등록되지 않은 유저입니다.'
+                };
+                res.status(410).json(response);
+                return;
+            }
+
+            const data: GetProjectsObjectType[] = await selectProject(uid);
+
+
+            const response: ApiResponse = {
+                ok: true,
+                msg: "Successfully GET PROJECT",
+                data: data
+            };
+            res.status(200).json(response);
         }
     } catch(err) {
         console.log(err);
