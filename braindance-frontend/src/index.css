@@ -1,8 +1,36 @@
+/*
+
+@font-face {
+  font-family: "HeirofLightBold";
+  font-weight: bold;
+  src: url("./fonts/HeirofLightBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "HeirofLightRegular";
+  font-weight: medium;
+  src: url("./fonts/HeirofLightRegular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'TheJamsil5Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+*/
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
 body {
   margin: 0;
+  /*
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  */
+  font-family: 'Pretendard';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
