@@ -1,0 +1,16 @@
+{
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "name": "BrainDance-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
