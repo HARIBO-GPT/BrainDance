@@ -4,4 +4,5 @@ export interface PostProjectObjectType {
     uid: string
     projectTitle: string
     originText: string
+    summaryText: string
 }
