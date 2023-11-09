@@ -1,16 +1,22 @@
 import express, {type Application, type Request, type Response } from 'express';
-
+import bodyParser from 'body-parser';
+import { UserRouter } from './User/UserRouter'
+import { ProjectRouter } from './Project/ProjectRouter'
+import { QuizRouter } from './Quiz/QuizRouter';
 
 const app: Application = express(); 
 
 const PORT: number = 3000;
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("hihi");
-});
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.get("/good", (req: Request, res: Response) => {
-    res.send("good");
+app.use('/api/user', UserRouter);
+app.use('/api/project', ProjectRouter);
+app.use('/api/quiz', QuizRouter);
+
+app.get("/test", (req: Request, res: Response) => {
+    res.send("api connect test complete!");
 });
 
 app.listen(PORT, () => {
