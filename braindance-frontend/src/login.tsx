@@ -37,9 +37,6 @@ function Login(){
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
         .then((data: UserCredential) => {
-            console.log(data.user)
-            
-
             userUid = data.user.uid;
             userAccessToken = data.user.accessToken;
             console.log(userAccessToken)
@@ -70,30 +67,28 @@ function Login(){
 
     return (
         <>
-           <h1 style={{fontWeight:"100"}}>안녕하세요!</h1>
+
+           <img style={{width: "35%"}} src="brain.png" />
+           <h1 style={{fontWeight: "lighter"}}>브레인<b>댄스</b></h1>
+
+
+           <h3>분산된 학습자료를 한번에 정리하자!</h3>
 
             <div>
               <p>
                 {userData
                   ? "name : " + userData.displayName
                   + "\nemail : "+userData.email
-                  : "로그인 버튼을 눌러주세요 :)"}
+                  : "지금 로그인하고 나만의 학습 비서를 찾으세요"}
               </p>
             </div>
 
             <Button 
-            variant="outlined"
+            variant="contained"
             
             onClick={handleGoogleLogin}
             
             >Google로 로그인</Button>
-
-            <Button
-            variant="outlined"
-
-            onClick={userSearch}
-                
-            >유저조회</Button>
         </>
     )
 }
