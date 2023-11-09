@@ -10,8 +10,27 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 
 function Login(){
+    var userUid: string = "";
+    var userAccessToken: string = "";
+
     type userDataType = {displayName: string; email: string }; // TSX 문법
     const [userData, setUserData] = useState<userDataType | null>(null);
+
+    function userSearch(){
+        axios.get("http://localhost:3000/api/user/" + userUid, {
+            headers: {
+                Authorization: `Bearer ${userAccessToken}`
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            // 성공적으로 API 요청을 보냈을 때 할 일
+        })
+        .catch(error => {
+            console.error(error);
+            // 에러 처리
+        });
+    }
 
     function handleGoogleLogin() {
         
@@ -21,11 +40,11 @@ function Login(){
             console.log(data.user)
             
 
-            const userUid: string = data.user.uid;
-            const userAccessToken: string = data.user.accessToken;
+            userUid = data.user.uid;
+            userAccessToken = data.user.accessToken;
             console.log(userAccessToken)
 
-            axios.post("https://localhost:3000/api/user", { uid: userUid }, {
+            axios.post("http://localhost:3000/api/user/", { uid: userUid }, {
                     headers: {
                         Authorization: `Bearer ${userAccessToken}`
                     }
@@ -68,6 +87,13 @@ function Login(){
             onClick={handleGoogleLogin}
             
             >Google로 로그인</Button>
+
+            <Button
+            variant="outlined"
+
+            onClick={userSearch}
+                
+            >유저조회</Button>
         </>
     )
 }
