@@ -7,7 +7,7 @@ export const insertProjectRow = async (data: PostProjectObjectType): Promise<num
     try {
         const connection: PoolConnection = await pool.getConnection();
         const insertQuery: string = `
-            INSERT INFO Project 
+            INSERT INTO Project 
             (projectTitle, createdAt, originText, uid) 
             VALUES 
             (?, NOW(), ?, ?)`;
