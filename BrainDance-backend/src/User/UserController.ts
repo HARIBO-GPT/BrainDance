@@ -17,7 +17,7 @@ export const getUserInfo = async (req: Request, res: Response): Promise<void> =>
                   msg: '파이어베이스에 등록되지 않은 유저입니다.'
                 };
         
-                res.status(401).json(resData);
+                res.status(410).json(resData);
                 return;
               }
             

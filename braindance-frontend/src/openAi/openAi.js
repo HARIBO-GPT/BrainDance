@@ -16,14 +16,14 @@ const openai = new OpenAI({
 //   content: string
 // }
 
-async function chatGPT(userInput) {
+async function chatGPT(userInput, category) {
   const messages = [
     {role: "system", content: "You are an academic teacher. I will provide you with a series of data that includes knowledge on a specific topic. You should tell me the summary and keyword based on this. Give me multiple choice questions for all the questions. You must attach the answer to the question and the intention of the question. You must give all the answers in Korean."}
   ];
   userInput += "\n### 요약:  ### 키워드: (콤마로 구분) ### 질문과 답변: (각각 넘버링) ('- 답변 :') ('- 의도 :') \n 위 템플릿에 맞춰서 해줘\n 반드시 '###'를 요약/키워드/질문과 답변 앞에 붙일 것. () 안의 조건 반드시 만족"
 
   if (userInput) {
-    messages.push({"role": "user", "content": userInput});
+    messages.push({"role": "user", "content": "Topic: " + category + "\n" + userInput});
   }
 
   const chatCompletion = await openai.chat.completions.create({
@@ -84,5 +84,5 @@ The following example also creates an Array, and assigns values to it:
 Example
 const cars = new Array("Saab", "Volvo", "BMW");
 `
-chatGPT(a);
+chatGPT(a,"math");
 
