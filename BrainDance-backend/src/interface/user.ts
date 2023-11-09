@@ -8,6 +8,7 @@ export interface UidRequest extends Request  {
 export interface UserRow extends RowDataPacket {
     id: number
     uid: string
+    createdAt: string
 }
 
 export interface UidToUserInfo {
