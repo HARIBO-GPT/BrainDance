@@ -1,23 +1,27 @@
-import { admin } from "src/auth/firebase";
-import { UserRow, type UidRequest } from "src/interface/user";
-import { type ApiResponse } from "src/interface/response";
-import { type Response } from 'express';
+import { admin } from "../auth/firebase";
+import { type UidToUserInfo, type UserRow, type UidRequest } from "../interface/user";
+import { type ApiResponse } from "../interface/response";
+import { type Request, type Response } from 'express';
 import { insertUser } from "./UserService";
 import { selectUserRow } from "./UserRepository";
 
-export const getUserInfo = async (req: UidRequest, res: Response): Promise<void> => {
+export const getUserInfo = async (req: Request, res: Response): Promise<void> => {
     try {
-        if (typeof req.uid === 'string'){
-            const userInfo = await admin.auth().getUser(req.uid);
-            if (userInfo === undefined) {
-                const response: ApiResponse = {
-                    ok: false,
-                    msg: "파이어베이스에 등록되지 않은 유저입니다."
+        if (typeof req.params.uid === 'string'){
+            let userInfo: UidToUserInfo = {};
+            try {
+                userInfo = await admin.auth().getUser(req.params.uid);
+              } catch (err) {
+                const resData: ApiResponse = {
+                  ok: false,
+                  msg: '파이어베이스에 등록되지 않은 유저입니다.'
                 };
-                res.status(410).json(response);
+        
+                res.status(401).json(resData);
                 return;
-            }
-            const existingUser: UserRow[] = await selectUserRow(req.uid);
+              }
+            
+            const existingUser: UserRow[] = await selectUserRow(req.params.uid);
         
             if (existingUser.length === 0) {
                 const response: ApiResponse = {
@@ -53,8 +57,8 @@ export const getUserInfo = async (req: UidRequest, res: Response): Promise<void>
 
 export const postUser = async (req: UidRequest, res: Response): Promise<void> => {
     try {
-        if (typeof req.uid === 'string'){
-            const uid: string = req.uid;
+        if (typeof req.body.uid === 'string'){
+            const uid: string = req.body.uid;
             const userInfo = await admin.auth().getUser(uid);
             console.log(userInfo);
             if (userInfo === undefined) {

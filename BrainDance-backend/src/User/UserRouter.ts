@@ -4,6 +4,6 @@ import { getUserInfo, postUser } from '../User/UserController';
 
 export const UserRouter = express.Router();
 
-UserRouter.route('/').get(tokenToUid, getUserInfo);
+UserRouter.route('/:uid').get(tokenToUid, getUserInfo);
 UserRouter.route('/').post(tokenToUid, postUser);
 

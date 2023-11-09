@@ -1,5 +1,5 @@
 import { type FieldPacket, type PoolConnection } from "mysql2/promise";
-import { type UserRow } from "src/interface/user";
+import { type UserRow } from "../interface/user";
 import pool from '../database/database';
 
 // const [user]: [UserRow[], FieldPacket[]] = await connection.execute('SELECT * FROM user WHERE uid = ?', [uid]);

@@ -9,3 +9,10 @@ export interface UserRow extends RowDataPacket {
     id: number
     uid: string
 }
+
+export interface UidToUserInfo {
+    uid?: string
+    email?: string
+    displayName?: string
+    photoURL?: string
+  }
