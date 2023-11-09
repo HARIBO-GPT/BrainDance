@@ -9,10 +9,15 @@ import { BrowserRouter } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material';
 
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#858CD0"
+    }
+  },
   typography: {
     button: {
       textTransform: 'none',
-      fontFamily: "Pretendard"
+      fontFamily: "Dovemayo_gothic"
     }
   }
 })

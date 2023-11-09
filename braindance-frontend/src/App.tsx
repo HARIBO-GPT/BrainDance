@@ -8,10 +8,9 @@ import Viewer from './viewer';
 
 import axios from 'axios';
 
-
 function App() {
   return (
-    <>
+    <>  
       <div className="App">
         <div className="Wrapper">
           <Routes>  
