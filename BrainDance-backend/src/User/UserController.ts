@@ -66,7 +66,7 @@ export const postUser = async (req: UidRequest, res: Response): Promise<void> =>
                 ok: false,
                 msg: '파이어베이스에 등록되지 않은 유저입니다.'
               };
-              res.status(400).json(resData);
+              res.status(410).json(resData);
               return;
             }
       
@@ -83,9 +83,9 @@ export const postUser = async (req: UidRequest, res: Response): Promise<void> =>
             else {
                 const response: ApiResponse = {
                     ok: false,
-                    msg: "already exist user"
+                    msg: "이미 유저 DB에 등록돼있습니다."
                 }
-                res.status(410).json(response);
+                res.status(413).json(response);
                 return;
             }
             

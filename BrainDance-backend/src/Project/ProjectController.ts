@@ -28,7 +28,7 @@ export const postProject = async (req: UidRequest, res: Response): Promise<void>
                     ok: false,
                     msg: '원문 텍스트 길이 제한은 3000자 입니다.'
                 };
-                res.status(411).json(response);
+                res.status(412).json(response);
                 return;
             }
 
