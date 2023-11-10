@@ -43,9 +43,8 @@ function viewer(){
                             </Card.Text>
                             
                             <table style={{width:"45vh", margin: "0 auto"}}>
-                                <ButtonGroup variant="contained" aria-label="outlined primary button group" fullWidth={true}>
+                                <ButtonGroup variant="contained" aria-label="outlined primary button group" fullWidth>
                                     <Button>퀴즈 풀기</Button>
-                                    <Button>삭제</Button>
                                     <Button>자세히 보기</Button>
                                 </ButtonGroup>
                             </table>
@@ -63,7 +62,6 @@ function viewer(){
                     새로운 노트 추가
                 </Fab>
             </Box>
-
 
 
         </div>
