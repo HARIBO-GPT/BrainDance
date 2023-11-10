@@ -1,4 +1,4 @@
-import { type PostProjectObjectType } from "../interface/project";
+import { type PostProjectObjectType, type ProjectSelectRow } from "../interface/project";
 import { type FieldPacket, type PoolConnection } from "mysql2/promise";
 import { type ResultSetHeader } from '../interface/response';
 import pool from '../database/database';
@@ -25,11 +25,11 @@ export const insertProjectRow = async (data: PostProjectObjectType): Promise<num
     }
 }
 
-export const selectProjectRow = async (uid: string): Promise<ProjectHomeRow[]> => {
+export const selectProjectRow = async (): Promise<ProjectSelectRow[]> => {
     try {
         const connection: PoolConnection = await pool.getConnection();
-        const selectQuery: string = 'SELECT id, projectTitle, createdAt, uid FROM Project where uid = ?';
-        const [projectRows]: [ProjectHomeRow[], FieldPacket[]] = await connection.execute(selectQuery, [uid]);
+        const selectQuery: string = 'SELECT id, projectTitle, createdAt, uid FROM Project';
+        const [projectRows]: [ProjectSelectRow[], FieldPacket[]] = await connection.execute(selectQuery);
         connection.release();
 
         return projectRows;

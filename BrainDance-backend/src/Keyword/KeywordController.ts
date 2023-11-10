@@ -1,5 +1,6 @@
 import { type UidRequest, type UidToUserInfo } from '../interface/user';
 import { type PostKeywordObjectType } from '../interface/keyword';
+import { type ApiResponse } from '../interface/response';
 import { type Response } from 'express';
 import { insertKeyword } from '../Keyword/KeywordService';
 import { admin } from "../auth/firebase";

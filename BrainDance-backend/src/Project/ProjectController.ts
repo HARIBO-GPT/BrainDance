@@ -3,7 +3,7 @@ import { type ApiResponse } from "../interface/response";
 import { type PostProjectObjectType, type GetProjectsObjectType } from "../interface/project";
 import { type UidToUserInfo, type UidRequest } from "../interface/user";
 import { type Response} from 'express';
-import { insertProject, selectProject } from '../Project/ProjectService';
+import { insertProject, selectProjects } from '../Project/ProjectService';
 
 export const postProject = async (req: UidRequest, res: Response): Promise<void> => {
     try {
@@ -80,8 +80,7 @@ export const getProjects = async (req: UidRequest, res: Response): Promise<void>
                 return;
             }
 
-            const data: GetProjectsObjectType[] = await selectProject(uid);
-
+            const data: GetProjectsObjectType[] = await selectProjects();
 
             const response: ApiResponse = {
                 ok: true,
@@ -96,7 +95,7 @@ export const getProjects = async (req: UidRequest, res: Response): Promise<void>
             ok: false,
             msg: "INTERNAL SERVER ERROR"
         }
-        res.send(response);
+        res.status(500).send(response);
         throw err;
     }
 }

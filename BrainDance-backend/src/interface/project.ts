@@ -15,7 +15,7 @@ export interface GetProjectsObjectType {
     displayName: string // uid -> project -> another uid
 }
 
-export interface ProjectHomeRow extends RowDataPacket {
+export interface ProjectSelectRow extends RowDataPacket {
     id: number
     projectTitle: string
     createdAt: string

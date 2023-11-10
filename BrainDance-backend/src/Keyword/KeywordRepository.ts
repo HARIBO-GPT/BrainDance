@@ -1,5 +1,5 @@
 import { type FieldPacket, type PoolConnection } from "mysql2/promise";
-import { type ResultSetHeader } from '../interface/response';
+import { type ResultSetHeader, type ApiResponse } from '../interface/response';
 import { type KeywordRow } from '../interface/keyword';
 import pool from '../database/database';
 
@@ -30,7 +30,7 @@ export const selectKeywordRows = async (projectId: number): Promise<string[]> =>
         connection.release();
 
         const response: string[] = [];
-        for (keywordRow of keywordRows){
+        for (const keywordRow of keywordRows){
             response.push(keywordRow.keyword);
         }
 

@@ -1,6 +1,8 @@
-import { type PostProjectObjectType, type GetProjectsObjectType, type ProjectHomeRow } from "../interface/project";
-import { insertProjectRow } from '../Project/ProjectRepository';
-import { selectKeywordRows } from '../Project/KeywordRepository';
+import { type PostProjectObjectType, type GetProjectsObjectType, type ProjectSelectRow } from "../interface/project";
+import { type UidToUserInfo } from '../interface/user';
+import { insertProjectRow, selectProjectRow } from '../Project/ProjectRepository';
+import { selectKeywordRows } from '../Keyword/KeywordRepository';
+import { admin } from "../auth/firebase";
 
 export const insertProject = async (data: PostProjectObjectType): Promise<number> => {
     try {
@@ -12,42 +14,29 @@ export const insertProject = async (data: PostProjectObjectType): Promise<number
     }
 }
 
-export const selectProjects = async (uid: string): Promise<GetProjectsObjectType[]> => {
+export const selectProjects = async (): Promise<GetProjectsObjectType[]> => {
     try {
-        const projectRows: ProjectHomeRow[] = await selectProjectRows(uid);
+        const projectRows: ProjectSelectRow[] = await selectProjectRow();
 
-        const keywords: string[] = await selectKeywordRows(project.projectId);
-        
         const response: GetProjectsObjectType[] = [];
-        for (projectRow of projectRows){
-            
-            const item: GetProjectsObjectType = {
-                projectId: projectRow.id,
-                projectTitle: projectRow.projectTitle,
-                createdAt: projectRow.createdAt
+        for (const projectRow of projectRows){
+            const userInfo: UidToUserInfo = await admin.auth().getUser(projectRow.uid);
+            const keywords: string[] = await selectKeywordRows(projectRow.id);
+            if (typeof userInfo.uid === 'string'){
+                const item: GetProjectsObjectType = {
+                    projectId: projectRow.id,
+                    projectTitle: projectRow.projectTitle,
+                    createdAt: projectRow.createdAt,
+                    keyword: keywords,
+                    displayName: userInfo.displayName
+                }
+                response.push(item);
             }
-            response.push(item);
         }
         return response;
-        const response: GetProjectsObjectType = {
-            projectId: project.projectId,
-            projectTitle: project.projectTitle,
-            createdAt: project.createdAt,
-            keyword: keywords
-        }
 
-        return response;
     } catch(err) {
         console.log(err);
         throw err;
     }
 }
-// export interface GetProjectsObjectType {
-//     projectId: number (uid where)
-//     projectTitle: string (uid where)
-//     createdAt: string (uid where)
-// project
-//     keyword: string[] (projectId where)
-// keyword
-//     displayName: string (uid)
-// }
