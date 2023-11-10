@@ -85,7 +85,7 @@ export const postUser = async (req: UidRequest, res: Response): Promise<void> =>
                     ok: false,
                     msg: "이미 유저 DB에 등록돼있습니다."
                 }
-                res.status(413).json(response);
+                res.status(201).json(response);
                 return;
             }
             

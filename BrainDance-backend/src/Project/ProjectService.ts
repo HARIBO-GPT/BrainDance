@@ -22,7 +22,7 @@ export const selectProjects = async (): Promise<GetProjectsObjectType[]> => {
         for (const projectRow of projectRows){
             const userInfo: UidToUserInfo = await admin.auth().getUser(projectRow.uid);
             const keywords: string[] = await selectKeywordRows(projectRow.id);
-            if (typeof userInfo.uid === 'string'){
+            if (typeof userInfo.displayName === 'string'){
                 const item: GetProjectsObjectType = {
                     projectId: projectRow.id,
                     projectTitle: projectRow.projectTitle,

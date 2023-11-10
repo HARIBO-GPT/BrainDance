@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/AddCircle';
 
-import './viewer.css';
+import '../viewer.css';
 
 function viewer(){
     return (
@@ -43,7 +43,7 @@ function viewer(){
                             </Card.Text>
                             
                             <table style={{width:"45vh", margin: "0 auto"}}>
-                                <ButtonGroup variant="contained" aria-label="outlined primary button group" fullWidth="true">
+                                <ButtonGroup variant="contained" aria-label="outlined primary button group" fullWidth={true}>
                                     <Button>퀴즈 풀기</Button>
                                     <Button>삭제</Button>
                                     <Button>자세히 보기</Button>
