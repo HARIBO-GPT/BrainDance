@@ -5,6 +5,31 @@ import { type Request, type Response } from 'express';
 import { insertUser } from "./UserService";
 import { selectUserRow } from "./UserRepository";
 
+import { chatGPT } from '../openAi/openAi'
+
+const script = `
+4.1. if Statements
+Perhaps the most well-known statement type is the if statement. For example:
+
+>>>
+x = int(input("Please enter an integer: "))
+Please enter an integer: 42
+if x < 0:
+    x = 0
+    print('Negative changed to zero')
+elif x == 0:
+    print('Zero')
+elif x == 1:
+    print('Single')
+else:
+    print('More')
+
+More
+There can be zero or more elif parts, and the else part is optional. The keyword ‘elif’ is short for ‘else if’, and is useful to avoid excessive indentation. An if … elif … elif … sequence is a substitute for the switch or case statements found in other languages.
+
+If you’re comparing the same value to several constants, or checking for specific types or attributes, you may also find the match statement useful. For more details see match Statements.`
+
+
 export const getUserInfo = async (req: Request, res: Response): Promise<void> => {
     try {
         if (typeof req.params.uid === 'string'){
@@ -60,7 +85,6 @@ export const postUser = async (req: UidRequest, res: Response): Promise<void> =>
         if (typeof req.body.uid === 'string'){
             const uid: string = req.body.uid;
             const userInfo = await admin.auth().getUser(uid);
-            console.log(userInfo);
             if (userInfo === undefined) {
               const resData: ApiResponse = {
                 ok: false,
@@ -81,9 +105,12 @@ export const postUser = async (req: UidRequest, res: Response): Promise<void> =>
                 return;
             }
             else {
+                const data: string = await chatGPT(script);
+
                 const response: ApiResponse = {
                     ok: false,
-                    msg: "이미 유저 DB에 등록돼있습니다."
+                    msg: "이미 유저 DB에 등록돼있습니다.",
+                    data: data
                 }
                 res.status(413).json(response);
                 return;
