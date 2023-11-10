@@ -31,7 +31,7 @@
         useEffect(() => {
             console.log("Hi")
             getObjectList();
-        }, []);
+        },[]);
 
         function getObjectList() {
             axios.get("http://localhost:3000/api/project/", {

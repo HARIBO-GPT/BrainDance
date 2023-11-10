@@ -11,7 +11,7 @@ import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
-function Login(props: {userUid: string, userToken: string, sendUserToken: Function, sendUserUid: Function}){
+function Login(props: {userUid: string, userToken: string, sendUserToken: Function, sendUserUid: Function, sendRfToken: Function}){
     const navigate = useNavigate();
 
     var userUid: string = "";
@@ -71,10 +71,11 @@ function Login(props: {userUid: string, userToken: string, sendUserToken: Functi
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
         .then((data: UserCredential) => {
+            props.sendRfToken(data);
             userUid = data.user.uid;
             // accessToken이 아니라 getIdToken() 메서드를 사용하여 토큰을 가져옵니다.
             data.user.getIdToken().then((idToken: string) => {
-                userAccessToken = idToken;
+                userAccessToken = idToken;  
                 console.log(userAccessToken);
 
                 // 이제 userAccessToken으로 API 요청을 보냅니다.
