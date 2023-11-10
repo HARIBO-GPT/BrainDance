@@ -13,8 +13,3 @@ export const insertKeyword = async (data: PostKeywordObjectType): Promise<void> 
         throw err;
     }
 }
-
-// export interface PostKeywordObjectType {
-//     projectId: number
-//     keywords: string[]
-// }

@@ -5,6 +5,8 @@ import { type Request, type Response } from 'express';
 import { insertUser } from "./UserService";
 import { selectUserRow } from "./UserRepository";
 
+
+
 export const getUserInfo = async (req: Request, res: Response): Promise<void> => {
     try {
         if (typeof req.params.uid === 'string'){
@@ -60,7 +62,6 @@ export const postUser = async (req: UidRequest, res: Response): Promise<void> =>
         if (typeof req.body.uid === 'string'){
             const uid: string = req.body.uid;
             const userInfo = await admin.auth().getUser(uid);
-            console.log(userInfo);
             if (userInfo === undefined) {
               const resData: ApiResponse = {
                 ok: false,
