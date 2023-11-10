@@ -11,7 +11,8 @@ import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
-function Login(props: {userUid: string, userToken: string, sendUserToken: Function, sendUserUid: Function, sendRfToken: Function}){
+function Login(props: {userUid: string, userToken: string, userImage: string
+    sendUserToken: Function, sendUserUid: Function, sendRfToken: Function, sendUserImage: Function}){
     const navigate = useNavigate();
 
     var userUid: string = "";
@@ -72,11 +73,13 @@ function Login(props: {userUid: string, userToken: string, sendUserToken: Functi
         signInWithPopup(auth, provider)
         .then((data: UserCredential) => {
             props.sendRfToken(data);
+
+            console.log(data)
             userUid = data.user.uid;
+            props.sendUserImage(data.user.photoURL)
             // accessToken이 아니라 getIdToken() 메서드를 사용하여 토큰을 가져옵니다.
             data.user.getIdToken().then((idToken: string) => {
-                userAccessToken = idToken;  
-                console.log(userAccessToken);
+                userAccessToken = idToken;
 
                 // 이제 userAccessToken으로 API 요청을 보냅니다.
                 axios.post("http://localhost:3000/api/user/", { uid: userUid }, {

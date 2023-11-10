@@ -11,6 +11,7 @@
 
     import Fab from '@mui/material/Fab';
     import AddIcon from '@mui/icons-material/AddCircle';
+    import CircularProgress from '@mui/material/CircularProgress';
 
     import '../viewer.css';
 
@@ -22,7 +23,23 @@
         userToken: string;
     }
 
-    function Viewer(props: {userUid: string, userToken: string}){
+    function Viewer(props: {userUid: string, userToken: string, userImage: string}){
+        function dateFormat(date: Date) {
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            let hour = date.getHours();
+            let minute = date.getMinutes();
+            let second = date.getSeconds();
+    
+            month = month >= 10 ? month : '0' + month;
+            day = day >= 10 ? day : '0' + day;
+            hour = hour >= 10 ? hour : '0' + hour;
+            minute = minute >= 10 ? minute : '0' + minute;
+            second = second >= 10 ? second : '0' + second;
+    
+            return date.getFullYear() + '년 ' + month + '월 ' + day + '일 ' + hour + ':' + minute + ':' + second;
+        }
+
         var userUid: string = props.userUid;
         var userAccessToken: string = props.userToken;
 
@@ -60,7 +77,7 @@
                                 <Grid container direction="row-reverse">      
                                     <Grid item>
                                         <Button variant="contained" color="secondary" style={{float:"right", marginLeft: "20px"}}>정렬</Button>
-                                        <Avatar>H</Avatar>
+                                        <img src= {props.userImage} width="40px" height="40px"/>
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -71,24 +88,25 @@
                                 <Card key={i} style={{ backgroundColor: "#cedbf9", width: "45vh", margin: "0 auto", paddingBottom: "20px", marginBottom: "15px", borderRadius: "25px"}}>
                                     <Card.Body>
                                         <Card.Title style={{paddingTop:"22px", paddingLeft:"20px", textAlign:"left", fontWeight:"bold", fontSize:"26px", paddingBottom:"5px"}}>{userObjects[i].projectTitle}</Card.Title>
-                                        <Card.Subtitle style={{paddingLeft: "20px", textAlign:"left"}}>4일 전 업데이트 · 민서님이 만들었어요!</Card.Subtitle>
-                                        <Card.Text style={{paddingLeft: "20px", textAlign:"left"}}>
+                                        <Card.Subtitle style={{paddingLeft: "20px", textAlign:"left", paddingRight: "20px"}}>{dateFormat(new Date(userObjects[i].createdAt)) + " · " + userObjects[i].displayName + "님이 만듬"}</Card.Subtitle>
+                                        <Card.Text style={{paddingLeft: "20px", textAlign:"left", paddingRight: "20px"}}>
                                         <b>주요 키워드</b>
-                                        <br/>브레인스토밍 · 교수님의 롤 실력 
+                                        <br/>{userObjects[i].keyword.join(' · ')}
                                         </Card.Text>
                                         
                                         <table style={{width:"45vh", margin: "0 auto"}}>
                                             <ButtonGroup variant="text" aria-label="outlined primary button group" fullWidth>
                                                 <Button>퀴즈 풀기</Button>
-                                                <Button>자세히 보기</Button>
+                                                <Button component={Link} to={'/detail/' + userObjects[i].projectId}>자세히 보기</Button>
                                             </ButtonGroup>
                                         </table>
                                     </Card.Body>
                                 </Card>
                             ))}
                         </div>
+                        <div style={{height:"100px"}} />
                 </div>
-
+                
                 <Box>
                     <Fab variant="extended" color="secondary" className="fab" 
                     component={Link} to={'/append'}

@@ -18,6 +18,7 @@ function App() {
   const [userToken, setUserToken] = useState("");
   const [userUid, setUserUid] = useState("");
   const [rfToken, setRfToken] = useState<UserCredential | null>();
+  const [userImage, setUserImage] = useState("");
 
   if(rfToken){
     rfToken.user.getIdToken().then((idToken: string) => {
@@ -33,8 +34,12 @@ function App() {
     setUserUid(str);
   }
 
-  const sendRfToken = (str: string) => {
+  const sendRfToken = (str : UserCredential) => {
     setRfToken(str);
+  }
+
+  const sendUserImage = (str: string) => {
+    setUserImage(str);
   }
 
   return (
@@ -42,12 +47,12 @@ function App() {
       <div className="App">
         <div className="Wrapper">
           <Routes>  
-            <Route path="/login" element={ <Login userToken={userToken} userUid={userUid}
-              sendUserToken= {sendUserToken} sendUserUid= {sendUserUid} sendRfToken={sendRfToken} />} />
-            <Route path="/viewer" element={ <Viewer userToken={userToken} userUid={userUid}/> } />
-            <Route path="/detail/:id" element={ <Detail /> } />
-            <Route path="/append" element={ <Append userToken={userToken} userUid={userUid}/> } />
-            <Route path="/squiz/:id" element={ <Quiz /> } />
+            <Route path="/login" element={ <Login userToken={userToken} userUid={userUid} userImage={userImage}
+              sendUserToken= {sendUserToken} sendUserUid= {sendUserUid} sendRfToken={sendRfToken} sendUserImage={sendUserImage} />} />
+            <Route path="/viewer" element={ <Viewer userToken={userToken} userUid={userUid} userImage={userImage} /> } />
+            <Route path="/detail/:id" element={ <Detail userToken={userToken} userUid={userUid} /> } />
+            <Route path="/append" element={ <Append userToken={userToken} userUid={userUid} /> } />
+            <Route path="/squiz/:id" element={ <Quiz userToken={userToken} userUid={userUid} /> } />
           </Routes>
         </div>
       </div>
