@@ -16,4 +16,4 @@ export interface UidToUserInfo {
     email?: string
     displayName?: string
     photoURL?: string
-  }
+}

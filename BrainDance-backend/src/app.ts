@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import { UserRouter } from './User/UserRouter'
 import { ProjectRouter } from './Project/ProjectRouter'
 import { QuizRouter } from './Quiz/QuizRouter';
+import { KeywordRouter } from './Keyword/KeywordRouter';
 
 const app: Application = express(); 
 
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 app.use('/api/user', UserRouter);
 app.use('/api/project', ProjectRouter);
 app.use('/api/quiz', QuizRouter);
+app.use('/api/keyword', KeywordRouter);
 
 app.get("/test", (req: Request, res: Response) => {
     res.send("api connect test complete!");
