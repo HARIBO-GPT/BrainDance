@@ -1,9 +1,9 @@
 import { type Response } from "express";
 import { type UidRequest } from "../interface/user";
 import { type ApiResponse } from "../interface/response";
-import { type InputChatGPT, type GPTObjectType, QuizObjectType, QuizInsertObjectType } from "../interface/quiz";
+import { type InputChatGPT, type GPTObjectType, QuizObjectType, QuizInsertObjectType, QuizSelectObjectType } from "../interface/quiz";
 import { parsingData } from "../openAi/parsing";
-import { insertQuiz } from "../Quiz/QuizService";
+import { insertQuiz, selectQuizs } from "../Quiz/QuizService";
 import { admin } from "../auth/firebase";
 import { chatGPT } from "../openAi/openAi";
 import { updateProjectSummary } from '../Project/ProjectRepository'
@@ -73,6 +73,44 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
         }
     }
     catch (err) {
+        console.log(err);
+        const response: ApiResponse = {
+            ok: false,
+            msg: "INTERNAL SERVER ERROR"
+        }
+        res.status(500).send(response);
+        throw err;
+    }
+}
+
+export const getQuizs = async (req: UidRequest, res: Response): Promise<void> => {
+    try {
+        if (typeof req.uid === 'string'){
+            const uid: string = req.uid;
+            const userInfo = await admin.auth().getUser(uid);
+            if (userInfo === undefined) {
+              const resData: ApiResponse = {
+                ok: false,
+                msg: '파이어베이스에 등록되지 않은 유저입니다.'
+              };
+              res.status(410).json(resData);
+              return;
+            }
+
+        const projectId: number = parseInt(req.params.projectId, 10);
+
+        const data: QuizSelectObjectType[] = await selectQuizs(projectId);
+        
+        const resData: ApiResponse = {
+            ok: true,
+            msg: '해당 프로젝트로 생성된 퀴즈 목록을 조회하였습니다.',
+            data: data
+          };
+
+          res.status(200).json(resData);
+
+        }
+    } catch (err) {
         console.log(err);
         const response: ApiResponse = {
             ok: false,
