@@ -8,13 +8,12 @@ export const insertProjectRow = async (data: PostProjectObjectType): Promise<num
         const connection: PoolConnection = await pool.getConnection();
         const insertQuery: string = `
             INSERT INTO Project 
-            (projectTitle, createdAt, originText, summaryText, uid) 
+            (projectTitle, createdAt, originText, uid) 
             VALUES 
-            (?, NOW(), ?, ?, ?)`;
+            (?, NOW(), ?, ?)`;
         const [ProjectRowInfo]: [any[], FieldPacket[]] = await connection.execute(insertQuery, [
             data.projectTitle,
             data.originText,
-            data.summaryText,
             data.uid]);
         connection.release();
         const insertId: number = (ProjectRowInfo as unknown as ResultSetHeader).insertId;
@@ -48,6 +47,19 @@ export const selectProjectWhereUidRow = async (projectId: number): Promise<Proje
         connection.release();
 
         return projectRow[0];
+
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+export const updateProjectSummary = async (summaryText: string, projectId: number): Promise<void> => {
+    try {
+        const connection: PoolConnection = await pool.getConnection();
+        const updateQuery: string = 'UPDATE Project SET summaryText = ? WHERE id = ?';
+        await connection.execute(updateQuery,[summaryText, projectId]);
+        connection.release();
 
     } catch(err) {
         console.log(err);

@@ -35,8 +35,7 @@ export const postProject = async (req: UidRequest, res: Response): Promise<void>
             const passedData: PostProjectObjectType = {
                 uid: uid,
                 projectTitle: req.body.projectTitle,
-                originText: req.body.originText,
-                summaryText: req.body.summaryText
+                originText: req.body.originText
             }
 
             const projectId: number = await insertProject(passedData);
