@@ -1,9 +1,9 @@
 import { admin } from "../auth/firebase";
 import { type ApiResponse } from "../interface/response";
-import { type PostProjectObjectType, type GetProjectsObjectType } from "../interface/project";
+import { type PostProjectObjectType, type GetProjectsObjectType, type GetProjectInfoObjectType } from "../interface/project";
 import { type UidToUserInfo, type UidRequest } from "../interface/user";
 import { type Response} from 'express';
-import { insertProject, selectProjects } from '../Project/ProjectService';
+import { insertProject, selectProjects, selectProjectDetail } from '../Project/ProjectService';
 
 export const postProject = async (req: UidRequest, res: Response): Promise<void> => {
     try {
@@ -85,6 +85,45 @@ export const getProjects = async (req: UidRequest, res: Response): Promise<void>
             const response: ApiResponse = {
                 ok: true,
                 msg: "Successfully GET PROJECT",
+                data: data
+            };
+            res.status(200).json(response);
+        }
+    } catch(err) {
+        console.log(err);
+        const response: ApiResponse = {
+            ok: false,
+            msg: "INTERNAL SERVER ERROR"
+        }
+        res.status(500).send(response);
+        throw err;
+    }
+}
+
+export const getProject = async (req: UidRequest, res: Response): Promise<void> => {
+    try {
+        if (typeof req.uid === 'string'){
+            const uid: string = req.uid;
+            let userInfo: UidToUserInfo = {};
+
+            try {
+                userInfo = await admin.auth().getUser(uid);
+            } 
+            catch (err) {
+                const response: ApiResponse = {
+                    ok: false,
+                    msg: '파이어베이스에 등록되지 않은 유저입니다.'
+                };
+                res.status(410).json(response);
+                return;
+            }
+            const projectId: number = parseInt(req.params.projectId, 10);
+
+            const data: GetProjectInfoObjectType = await selectProjectDetail(projectId);
+            
+            const response: ApiResponse = {
+                ok: true,
+                msg: 'Successfully GET PROJECT Detail Info',
                 data: data
             };
             res.status(200).json(response);

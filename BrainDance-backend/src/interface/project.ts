@@ -11,13 +11,32 @@ export interface GetProjectsObjectType {
     projectId: number
     projectTitle: string
     createdAt: string
-    keyword: string[] // projectId
-    displayName: string // uid -> project -> another uid
+    keyword: string[]
+    displayName: string
 }
 
 export interface ProjectSelectRow extends RowDataPacket {
     id: number
     projectTitle: string
     createdAt: string
+    uid: string
+}
+
+export interface GetProjectInfoObjectType {
+    projectId: number
+    projectTitle: string
+    createdAt: string
+    originText: string
+    summaryText: string
+    keyword: string[]
+    displayName: string
+}
+
+export interface ProjectSelectWhereUidRow extends RowDataPacket {
+    id: number
+    projectTitle: string
+    createdAt: string
+    originText: string
+    summaryText: string
     uid: string
 }

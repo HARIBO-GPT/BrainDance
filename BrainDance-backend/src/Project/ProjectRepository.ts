@@ -1,4 +1,4 @@
-import { type PostProjectObjectType, type ProjectSelectRow } from "../interface/project";
+import { type PostProjectObjectType, type ProjectSelectRow, type ProjectSelectWhereUidRow } from "../interface/project";
 import { type FieldPacket, type PoolConnection } from "mysql2/promise";
 import { type ResultSetHeader } from '../interface/response';
 import pool from '../database/database';
@@ -33,6 +33,21 @@ export const selectProjectRow = async (): Promise<ProjectSelectRow[]> => {
         connection.release();
 
         return projectRows;
+
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+export const selectProjectWhereUidRow = async (projectId: number): Promise<ProjectSelectWhereUidRow> => {
+    try {
+        const connection: PoolConnection = await pool.getConnection();
+        const selectQuery: string = 'SELECT * FROM Project WHERE id = ?';
+        const [projectRow]: [ProjectSelectWhereUidRow[], FieldPacket[]] = await connection.execute(selectQuery,[projectId]);
+        connection.release();
+
+        return projectRow[0];
 
     } catch(err) {
         console.log(err);
