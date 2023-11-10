@@ -9,4 +9,5 @@ const auth_1 = require("../auth/auth");
 const ProjectController_1 = require("../Project/ProjectController");
 exports.ProjectRouter = express_1.default.Router();
 exports.ProjectRouter.route('/').get(auth_1.tokenToUid, ProjectController_1.getProjects);
+exports.ProjectRouter.route('/:projectId').get(auth_1.tokenToUid, ProjectController_1.getProject);
 exports.ProjectRouter.route('/').post(auth_1.tokenToUid, ProjectController_1.postProject);
