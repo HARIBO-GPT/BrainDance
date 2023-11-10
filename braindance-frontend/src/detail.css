@@ -1,0 +1,23 @@
+.paragraph {
+    text-align: left;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.fab {
+    margin: 0px;
+    top: auto;
+    right: 0px;
+    bottom: 70px;
+    left: 0px;
+    position: sticky;
+};
+
+.elementViewer {
+    -ms-overflow-style: none;
+}
+ 
+.elementViewer::-webkit-scrollbar { 
+    display: none !important;
+    width: 0 !important;
+}
