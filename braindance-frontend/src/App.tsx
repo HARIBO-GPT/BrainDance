@@ -12,17 +12,27 @@ import Quiz from './pages/quiz';
 import axios from 'axios';
 
 function App() {
-  var userToken = ""; var userUid = "";
+  const [userToken, setUserToken] = useState("");
+  const [userUid, setUserUid] = useState("");
+
+  const sendUserToken = (str: string) => {
+    setUserToken(str);
+  }
+
+  const sendUserUid = (str: string) => {
+    setUserUid(str);
+  }
 
   return (
     <>  
       <div className="App">
         <div className="Wrapper">
           <Routes>  
-            <Route path="/login" element={ Login({userToken:userToken, userUid:userUid}) } />
-            <Route path="/viewer" element={ Viewer() } />
+            <Route path="/login" element={ Login({userToken:userToken, userUid:userUid,
+              sendUserToken: sendUserToken, sendUserUid: sendUserUid}) } />
+            <Route path="/viewer" element={ Viewer({userToken:userToken, userUid:userUid}) } />
             <Route path="/detail/:id" element={ Detail() } />
-            <Route path="/append" element={ Append() } />
+            <Route path="/append" element={ Append({userToken:userToken, userUid:userUid}) } />
             <Route path="/squiz/:id" element={ Quiz() } />
           </Routes>
         </div>

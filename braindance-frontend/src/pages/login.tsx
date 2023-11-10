@@ -11,7 +11,7 @@ import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
-function Login(props: {userUid: string, userToken: string}){
+function Login(props: {userUid: string, userToken: string, sendUserToken: Function, sendUserUid: Function}){
     const navigate = useNavigate();
 
     var userUid: string = "";
@@ -84,9 +84,9 @@ function Login(props: {userUid: string, userToken: string}){
                     }
                 })
                 .then(response => {
-                    props.userToken = userAccessToken;
-                    props.userUid = userUid;
-                    console.log(response.data);
+                    props.sendUserToken(userAccessToken);
+                    props.sendUserUid(userUid);
+                    
                     // 성공적으로 API 요청을 보냈을 때 할 일
                     navigate("/viewer");
                 })

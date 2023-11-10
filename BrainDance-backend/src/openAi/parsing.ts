@@ -89,6 +89,6 @@ export const parsingData = async (processedData: string): Promise<GPTObjectType>
     quizArray.push(quizObject); 
 
     gptObject.quiz = quizArray;
-
+    console.log(gptObject);
     return gptObject;
 }

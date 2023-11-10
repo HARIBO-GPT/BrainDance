@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router-dom';
 
 import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
@@ -17,7 +17,12 @@ import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
-function Append(){
+function Append(props: {userUid: string, userToken: string}){
+    const navigate = useNavigate();
+
+    var userUid: string = props.userUid;
+    var userAccessToken: string = props.userToken;
+
     const [topic, setTopic] = React.useState('');
     const [rawTopic, setRawTopic] = React.useState('');
 
@@ -43,8 +48,34 @@ function Append(){
         setScript(event.target.value);
     }
 
-    const appendUserBD = () => {
-        console.log(title + rawTopic + encodeURI(script));
+    function appendUserBD() {
+        
+        // Stage 1
+        axios.post("http://localhost:3000/api/project/", {
+            "projectTitle": title,
+            "originText": script
+        }, {
+            headers: {
+                Authorization: `Bearer ${userAccessToken}`
+            }
+        }).then((req1) => {
+            axios.post("http://localhost:3000/api/quiz/", {
+                "quizRawScript": script,
+                "projectId": req1.data.data.projectId,
+                "category": rawTopic
+            }, {
+                headers: {
+                    Authorization: `Bearer ${userAccessToken}`
+                }
+            }).then((req2) => {
+                navigate("/viewer");
+            }
+
+            )
+        }
+
+        )
+        
     }
 
     return (
