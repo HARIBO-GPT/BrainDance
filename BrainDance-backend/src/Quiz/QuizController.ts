@@ -22,7 +22,7 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
               res.status(410).json(resData);
               return;
             }
-            
+            console.log(req.body);
             const passedData: InputChatGPT = {
                 userInput: req.body.quizRawScript,
                 category: req.body.category

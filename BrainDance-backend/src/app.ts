@@ -4,9 +4,12 @@ import { UserRouter } from './User/UserRouter'
 import { ProjectRouter } from './Project/ProjectRouter'
 import { QuizRouter } from './Quiz/QuizRouter';
 import { KeywordRouter } from './Keyword/KeywordRouter';
+import cors from 'cors';
+
 
 const app: Application = express(); 
 
+app.use(cors())
 const PORT: number = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));

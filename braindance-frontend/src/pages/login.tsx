@@ -9,7 +9,12 @@ import Button from '@mui/material/Button';
 
 import axios from 'axios';
 
-function Login(){
+import { useNavigate } from 'react-router-dom';
+
+function Login(props: {userUid: string, userToken: string, userImage: string
+    sendUserToken: Function, sendUserUid: Function, sendRfToken: Function, sendUserImage: Function}){
+    const navigate = useNavigate();
+
     var userUid: string = "";
     var userAccessToken: string = "";
 
@@ -67,11 +72,14 @@ function Login(){
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
         .then((data: UserCredential) => {
+            props.sendRfToken(data);
+
+            console.log(data)
             userUid = data.user.uid;
+            props.sendUserImage(data.user.photoURL)
             // accessToken이 아니라 getIdToken() 메서드를 사용하여 토큰을 가져옵니다.
             data.user.getIdToken().then((idToken: string) => {
                 userAccessToken = idToken;
-                console.log(userAccessToken);
 
                 // 이제 userAccessToken으로 API 요청을 보냅니다.
                 axios.post("http://localhost:3000/api/user/", { uid: userUid }, {
@@ -80,8 +88,11 @@ function Login(){
                     }
                 })
                 .then(response => {
-                    console.log(response.data);
+                    props.sendUserToken(userAccessToken);
+                    props.sendUserUid(userUid);
+                    
                     // 성공적으로 API 요청을 보냈을 때 할 일
+                    navigate("/viewer");
                 })
                 .catch(error => {
                     console.error(error);
