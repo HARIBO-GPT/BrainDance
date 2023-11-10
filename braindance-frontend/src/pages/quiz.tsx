@@ -23,6 +23,9 @@ function Quiz(props: {userUid: string, userToken: string}){
     var userUid: string = props.userUid;
     var userAccessToken: string = props.userToken;
 
+    const [currentNumber, setCurrentNumber] = useState(0);
+    var score = 0;
+
     const [userObjects, setUserObjects] = useState<UserObject[]>([]);
 
     useEffect(() => {
@@ -45,7 +48,30 @@ function Quiz(props: {userUid: string, userToken: string}){
 
     return (
         <div>
+            <div>
+                <Grid container style={{paddingBottom: "20px", width: "45vh", margin: "0 auto", marginTop:"20px"}}>
+                    <Grid item>
+                        <b style={{fontSize:"33px", marginRight:"10px"}}>{"브레인 댄스!"}</b>
+                    </Grid>                          
+                    <Grid item xs>                                 
+                        <Grid container direction="row-reverse">      
+                            <Grid item>
+                                <Button variant="contained" color="secondary" style={{float:"right", marginLeft: "20px", width: "90px"}}
+                                component={Link} to={'/viewer'}
+                                >포기</Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
 
+                {
+                    userObjects ?
+                        <div>
+                            
+                        </div>
+                    : null
+                }
+            </div>
         </div>
     )
 }
