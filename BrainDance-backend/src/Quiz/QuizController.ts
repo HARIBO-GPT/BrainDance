@@ -6,6 +6,8 @@ import { parsingData } from "../openAi/parsing";
 import { insertQuiz } from "../Quiz/QuizService";
 import { admin } from "../auth/firebase";
 import { chatGPT } from "../openAi/openAi";
+import { updateProjectSummary } from '../Project/ProjectRepository'
+import { insertKeywordRow } from "../Keyword/KeywordRepository";
 
 export const postQuiz = async (req: UidRequest, res: Response): Promise<void> => {
     try {
@@ -36,8 +38,21 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
                 data: object
             }
 
-            if (object.quiz !== null){
+            if (typeof object.summaryText === 'string'){
+                const summaryText: string = object.summaryText;
+                const projectId: number = req.body.projectId;
+                
+                await updateProjectSummary(summaryText,projectId);
+                if (object.keyword !== null){
+                    for (const keyword of object.keyword){
+                        await insertKeywordRow(projectId, keyword);
+                    }
+                }
+            }
 
+            
+
+            if (object.quiz !== null){
                 const quizArray: QuizInsertObjectType[] = []
                 for (const quiz of object.quiz){
                     if (typeof quiz.quizQuestion === 'string' && typeof quiz.quizAnswer === 'string' && typeof quiz.quizComment === 'string'){
