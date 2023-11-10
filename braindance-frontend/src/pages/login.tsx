@@ -9,7 +9,11 @@ import Button from '@mui/material/Button';
 
 import axios from 'axios';
 
-function Login(){
+import { useNavigate } from 'react-router-dom';
+
+function Login(props: {userUid: string, userToken: string}){
+    const navigate = useNavigate();
+
     var userUid: string = "";
     var userAccessToken: string = "";
 
@@ -80,8 +84,11 @@ function Login(){
                     }
                 })
                 .then(response => {
+                    props.userToken = userAccessToken;
+                    props.userUid = userUid;
                     console.log(response.data);
                     // 성공적으로 API 요청을 보냈을 때 할 일
+                    navigate("/viewer");
                 })
                 .catch(error => {
                     console.error(error);

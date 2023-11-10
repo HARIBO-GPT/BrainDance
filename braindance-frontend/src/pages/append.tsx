@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
@@ -12,19 +13,39 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import TextField from '@mui/material/TextField';
 
+import axios from 'axios';
+
+import { useNavigate } from 'react-router-dom';
+
 function Append(){
     const [topic, setTopic] = React.useState('');
-    const [textFieldValue, setTextFieldValue] = React.useState('');
+    const [rawTopic, setRawTopic] = React.useState('');
+
+    const [title, setTitle] = React.useState('');
+    const [script, setScript] = React.useState('');
+
 
     const handleSelectChange = (event: SelectChangeEvent) => {
         const newTopic = event.target.value as string;
         setTopic(newTopic);
-        setTextFieldValue(newTopic); // Update text field when select changes
+        setRawTopic(newTopic); // Update text field when select changes
     };
 
     const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTextFieldValue(event.target.value); // Update text field independently
+        setRawTopic(event.target.value); // Update text field independently
     };
+
+    const titleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    }
+
+    const scriptTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setScript(event.target.value);
+    }
+
+    const appendUserBD = () => {
+        console.log(title + rawTopic + encodeURI(script));
+    }
 
     return (
         <div>
@@ -36,7 +57,10 @@ function Append(){
                 <Grid item xs>                                 
                     <Grid container direction="row-reverse">      
                         <Grid item>
-                            <Button variant="contained" color="secondary" style={{float:"right", marginLeft: "20px", width: "90px"}}>취소</Button>
+                            <Button variant="contained" color="secondary"
+                            style={{float:"right", marginLeft: "20px", width: "90px"}}
+                            component={Link} to={'/viewer'}
+                            >취소</Button>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -67,14 +91,26 @@ function Append(){
 
                 <Box>
                     <TextField
-                        label="최종 프롬프트"
+                        label="BD 프롬프트"
                         fullWidth
                         id="outlined-basic"
                         variant="outlined"
-                        value={textFieldValue}
+                        value={rawTopic}
                         onChange={handleTextFieldChange}
                     />
                 </Box>
+            </div>
+
+            <div style={{height:"15px"}} />
+
+            <div style={{backgroundColor: "#bbbbd9", width: "45vh", paddingBottom: "25px", borderRadius: "30px", paddingTop:"1px"}}>
+                <h2 style={{textAlign: "left", marginLeft: "20px"}}>BD 제목을 지어주세요</h2>
+
+                <TextField
+                    fullWidth
+                    onChange = {titleTextFieldChange}
+                    variant = "outlined"
+                />
             </div>
 
             <div style={{height:"15px"}} />
@@ -86,6 +122,7 @@ function Append(){
                     style={{textAlign: 'left'}}
                     fullWidth
                     multiline
+                    onChange = {scriptTextFieldChange}
                     rows={10}
                 />
             </div>
@@ -94,7 +131,12 @@ function Append(){
                 <p>브레인댄스를 제작함으로서 본 앱의 이용 약관 및 인공지능 사용 정책에 동의하는 것입니다.</p>
             </div>
 
-            <Button variant="contained" color="secondary" fullWidth style={{float:"right", marginLeft: "20px"}}>BD 만들기</Button>
+            <Button variant="contained" style={{float:"right", marginBottom: "10vh", marginLeft: "20px"}}
+            color="secondary"
+            fullWidth
+            onClick={appendUserBD}
+            >BD 만들기</Button>
+        
         </div>
     );
 }

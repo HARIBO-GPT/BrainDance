@@ -1,4 +1,5 @@
-//import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
+
 import Card from 'react-bootstrap/Card';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -55,7 +56,9 @@ function viewer(){
             </div>
 
             <Box>
-                <Fab variant="extended" color="secondary" className="fab">
+                <Fab variant="extended" color="secondary" className="fab" 
+                component={Link} to={'/append'}
+                >
                     <AddIcon sx={{ mr: 1 }} />
                     새로운 노트 추가
                 </Fab>

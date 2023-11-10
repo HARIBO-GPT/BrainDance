@@ -12,12 +12,14 @@ import Quiz from './pages/quiz';
 import axios from 'axios';
 
 function App() {
+  var userToken = ""; var userUid = "";
+
   return (
     <>  
       <div className="App">
         <div className="Wrapper">
           <Routes>  
-            <Route path="/login" element={ Login() } />
+            <Route path="/login" element={ Login({userToken:userToken, userUid:userUid}) } />
             <Route path="/viewer" element={ Viewer() } />
             <Route path="/detail/:id" element={ Detail() } />
             <Route path="/append" element={ Append() } />
