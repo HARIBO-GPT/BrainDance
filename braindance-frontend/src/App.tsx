@@ -7,6 +7,7 @@ import Login from './pages/login';
 import Viewer from './pages/viewer';
 import Append from './pages/append';
 import Detail from './pages/detail';
+import Quiz from './pages/quiz';
 
 import axios from 'axios';
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/viewer" element={ Viewer() } />
             <Route path="/detail/:id" element={ Detail() } />
             <Route path="/append" element={ Append() } />
+            <Route path="/squiz/:id" element={ Quiz() } />
           </Routes>
         </div>
       </div>

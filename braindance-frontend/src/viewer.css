@@ -4,14 +4,14 @@
     right: 0px;
     bottom: 70px;
     left: 0px;
-    position: sticky;
+    position: fixed;
 };
 
 .elementViewer {
     -ms-overflow-style: none;
 }
  
-.elementViewer::-webkit-scrollbar { 
+::-webkit-scrollbar { 
     display: none !important;
     width: 0 !important;
 }
