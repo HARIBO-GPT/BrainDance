@@ -96,7 +96,7 @@
                                         
                                         <table style={{width:"45vh", margin: "0 auto"}}>
                                             <ButtonGroup variant="text" aria-label="outlined primary button group" fullWidth>
-                                                <Button>퀴즈 풀기</Button>
+                                                <Button component={Link} to={'/squiz/' + userObjects[i].projectId}>퀴즈 풀기</Button>
                                                 <Button component={Link} to={'/detail/' + userObjects[i].projectId}>자세히 보기</Button>
                                             </ButtonGroup>
                                         </table>
