@@ -56,8 +56,6 @@ export const selectProjectWhereUidRow = async (projectId: number): Promise<Proje
 
 export const updateProjectSummary = async (summaryText: string, projectId: number): Promise<void> => {
     try {
-        console.log(summaryText)
-        console.log(projectId)
         const connection: PoolConnection = await pool.getConnection();
         const updateQuery: string = 'UPDATE Project SET summaryText = ? WHERE id = ?';
         await connection.execute(updateQuery,[summaryText, projectId]);

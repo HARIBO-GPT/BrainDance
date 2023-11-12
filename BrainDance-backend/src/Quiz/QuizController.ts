@@ -27,11 +27,11 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
                 userInput: req.body.quizRawScript,
                 category: req.body.category
             }
-
+            
             const processedData: string = await chatGPT(passedData);
 
             const object: GPTObjectType = await parsingData(processedData);
-
+            console.log(object)
             const response: ApiResponse = {
                 ok: true,
                 msg: "Successfully POST Quiz About Project",

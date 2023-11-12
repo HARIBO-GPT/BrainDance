@@ -39,7 +39,7 @@ function Quiz(props: {userUid: string, userToken: string}){
     },[]);
 
     function submitAnswer(myAnswer: string){
-        let answer = userObjects[currentNumber].quizAnswer.replace(')','.').split(".")[0].replace(':','').replace(' ', '')
+        let answer = userObjects[currentNumber].quizAnswer.replace(')','.').split(".")[0].replace(':','').replace(' ', '').replace('.','')
         console.log(answer)
         if(answer == myAnswer){
             setUserScore(userScore+1); setQuizBool(1);
