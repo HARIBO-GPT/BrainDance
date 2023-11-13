@@ -7,8 +7,8 @@ export interface InputChatGPT {
 
 export interface GPTObjectType {
     summaryText: string | null
-    keyword: string[] | null
-    quiz: QuizObjectType[] | null
+    keyword: string | null
+    quiz: QuizObjectType[]
 }
 
 export interface QuizObjectType {

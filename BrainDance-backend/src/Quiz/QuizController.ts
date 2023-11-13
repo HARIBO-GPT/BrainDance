@@ -1,12 +1,12 @@
 import { type Response } from "express";
 import { type UidRequest } from "../interface/user";
 import { type ApiResponse } from "../interface/response";
-import { type InputChatGPT, type GPTObjectType, QuizObjectType, QuizInsertObjectType, QuizSelectObjectType } from "../interface/quiz";
+import { type InputChatGPT, type GPTObjectType, type QuizInsertObjectType, type QuizSelectObjectType } from "../interface/quiz";
 import { parsingData } from "../openAi/parsing";
 import { insertQuiz, selectQuizs } from "../Quiz/QuizService";
 import { admin } from "../auth/firebase";
 import { chatGPT } from "../openAi/openAi";
-import { updateProjectSummary } from '../Project/ProjectRepository'
+import { updateProjectSummaryAndKeyword } from '../Project/ProjectRepository'
 import { insertKeywordRow } from "../Keyword/KeywordRepository";
 
 export const postQuiz = async (req: UidRequest, res: Response): Promise<void> => {
@@ -27,34 +27,47 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
                 userInput: req.body.quizRawScript,
                 category: req.body.category
             }
+            
+            let object: GPTObjectType = {
+                summaryText: null,
+                keyword: null,
+                quiz: []
+            }
 
-            const processedData: string = await chatGPT(passedData);
-
-            const object: GPTObjectType = await parsingData(processedData);
-
+            while (object.quiz.length === 0 || !(object.quiz[0].quizComment !== null)){
+                const processedData: string = await chatGPT(passedData);
+                object = await parsingData(processedData);
+            }
+            const responseData: GPTObjectType = {
+                summaryText: object.summaryText,
+                keyword: object.keyword,
+                quiz: object.quiz
+            }
+            
             const response: ApiResponse = {
                 ok: true,
                 msg: "Successfully POST Quiz About Project",
-                data: object
+                data: responseData
             }
 
-            if (typeof object.summaryText === 'string'){
-                const summaryText: string = object.summaryText;
+            if (typeof responseData.summaryText === 'string' && typeof responseData.keyword === 'string'){
+                const summaryText: string = responseData.summaryText;
+                const keywords: string = responseData.keyword;
                 const projectId: number = req.body.projectId;
                 
-                await updateProjectSummary(summaryText,projectId);
-                if (object.keyword !== null){
-                    for (const keyword of object.keyword){
-                        await insertKeywordRow(projectId, keyword);
-                    }
-                }
+                await updateProjectSummaryAndKeyword(summaryText,keywords,projectId);
+                // if (responseData.keyword !== null){
+                //     for (const keyword of responseData.keyword){
+                //         await insertKeywordRow(projectId, keyword);
+                //     }
+                // }
             }
 
             
 
-            if (object.quiz !== null){
+            if (responseData.quiz !== null){
                 const quizArray: QuizInsertObjectType[] = []
-                for (const quiz of object.quiz){
+                for (const quiz of responseData.quiz){
                     if (typeof quiz.quizQuestion === 'string' && typeof quiz.quizAnswer === 'string' && typeof quiz.quizComment === 'string'){
                         const item: QuizInsertObjectType = {
                             projectId: req.body.projectId,
@@ -67,7 +80,7 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
                 }
                 await insertQuiz(quizArray);
             }
-
+            console.log(response)
             res.status(200).json(response);
 
         }

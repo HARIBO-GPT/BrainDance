@@ -18,6 +18,7 @@ export interface ProjectSelectRow extends RowDataPacket {
     id: number
     projectTitle: string
     createdAt: string
+    keywords: string
     uid: string
 }
 
@@ -37,5 +38,6 @@ export interface ProjectSelectWhereUidRow extends RowDataPacket {
     createdAt: string
     originText: string
     summaryText: string
+    keywords: string
     uid: string
 }
