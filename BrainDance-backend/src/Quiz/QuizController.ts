@@ -6,7 +6,7 @@ import { parsingData } from "../openAi/parsing";
 import { insertQuiz, selectQuizs } from "../Quiz/QuizService";
 import { admin } from "../auth/firebase";
 import { chatGPT } from "../openAi/openAi";
-import { updateProjectSummary } from '../Project/ProjectRepository'
+import { updateProjectSummaryAndKeyword } from '../Project/ProjectRepository'
 import { insertKeywordRow } from "../Keyword/KeywordRepository";
 
 export const postQuiz = async (req: UidRequest, res: Response): Promise<void> => {
@@ -50,16 +50,17 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
                 data: responseData
             }
 
-            if (typeof responseData.summaryText === 'string'){
+            if (typeof responseData.summaryText === 'string' && typeof responseData.keyword === 'string'){
                 const summaryText: string = responseData.summaryText;
+                const keywords: string = responseData.keyword;
                 const projectId: number = req.body.projectId;
                 
-                await updateProjectSummary(summaryText,projectId);
-                if (responseData.keyword !== null){
-                    for (const keyword of responseData.keyword){
-                        await insertKeywordRow(projectId, keyword);
-                    }
-                }
+                await updateProjectSummaryAndKeyword(summaryText,keywords,projectId);
+                // if (responseData.keyword !== null){
+                //     for (const keyword of responseData.keyword){
+                //         await insertKeywordRow(projectId, keyword);
+                //     }
+                // }
             }
 
             

@@ -50,8 +50,7 @@ export const parsingData = async (processedData: string): Promise<GPTObjectType>
             summaryReady = false;
         }
         else if (keywordReady){
-            const keyword: string[] = i.split(", ");
-            gptObject.keyword = keyword;
+            gptObject.keyword = i;
             keywordReady = false;
         }
         else if (qnaReady){

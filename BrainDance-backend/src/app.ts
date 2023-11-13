@@ -9,8 +9,9 @@ import cors from 'cors';
 
 const app: Application = express(); 
 
-app.use(cors())
 const PORT: number = 3000;
+
+app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
