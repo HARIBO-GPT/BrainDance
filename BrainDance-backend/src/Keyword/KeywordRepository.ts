@@ -1,7 +1,7 @@
 import { type FieldPacket, type PoolConnection } from "mysql2/promise";
 import { type ResultSetHeader, type ApiResponse } from '../interface/response';
 import { type KeywordRow } from '../interface/keyword';
-import pool from '../database/database';
+import pool from '../config/database';
 
 export const insertKeywordRow = async (projectId: number, keyword: string): Promise<void> => {
     try {

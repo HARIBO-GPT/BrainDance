@@ -1,7 +1,7 @@
 import { type PostProjectObjectType, type ProjectSelectRow, type ProjectSelectWhereUidRow } from "../interface/project";
 import { type FieldPacket, type PoolConnection } from "mysql2/promise";
 import { type ResultSetHeader } from '../interface/response';
-import pool from '../database/database';
+import pool from '../config/database';
 
 export const insertProjectRow = async (data: PostProjectObjectType): Promise<number> => {
     try {

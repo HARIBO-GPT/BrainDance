@@ -63,8 +63,6 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
                 // }
             }
 
-            
-
             if (responseData.quiz !== null){
                 const quizArray: QuizInsertObjectType[] = []
                 for (const quiz of responseData.quiz){
