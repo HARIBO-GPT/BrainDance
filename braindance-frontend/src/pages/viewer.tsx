@@ -85,7 +85,12 @@ function Viewer(){
                             <Grid container direction="row-reverse">      
                                 <Grid item>
                                     <Button variant="contained" color="secondary" style={{float:"right", marginLeft: "20px"}}>정렬</Button>
-                                    <img src={user.userProfileImage} width="40px" height="40px" style={{borderRadius: "20px"}} />
+                                    <img src={user.userProfileImage} width="40px" height="40px" style={{borderRadius: "20px"}} 
+                                    onClick={()=>{
+                                        localStorage.clear();
+                                        navigate("/login");
+                                    }}
+                                    />
                                 </Grid>
                             </Grid>
                         </Grid>

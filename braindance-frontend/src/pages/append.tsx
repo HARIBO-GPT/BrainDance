@@ -21,7 +21,7 @@ function Append(){
     let user = useSelector<RootState>((state) => state.user);
 
     var userUid: string = user.userUid;
-    var userAccessToken: string = user.userToken;
+    var userAccessToken: string = user.userIdToken;
 
     const [topic, setTopic] = useState('');
     const [rawTopic, setRawTopic] = useState('');
@@ -157,16 +157,34 @@ function Append(){
                 />
             </div>
 
-            <div style={{width: "45vh", borderRadius: "30px", paddingTop:"1px"}}>
+            <div style={{width: "45vh", borderRadius: "30px", paddingTop:"1px"}}
+            onClick={()=>{
+                // window.open("");
+            }}
+            >
                 <p>브레인댄스를 제작함으로서 본 앱의 이용 약관 및 인공지능 사용 정책에 동의하는 것입니다.</p>
             </div>
 
             <Button variant="contained" style={{float:"right", marginBottom: "10vh", marginLeft: "20px"}}
             color="secondary"
             fullWidth
-            onClick={appendUserBD}
+            onClick = {()=>{
+                if(!title.length){
+                    window.alert("문서 제목을 입력해 주세요.");
+                } else if(!script.length){
+                    window.alert("문서 스크립트를 입력해 주세요.");
+                } else if(!rawTopic.length){
+                    window.alert("대화의 주제를 선택하거나, 직접 입력해 주세요.");
+                } else if(script.length > 3000){
+                    window.alert("안정적인 서비스 제공을 위해 스크립트 업로드는 한 번에 3,000자까지 지원하고 있어요.");
+                } else {
+                    
+                }
+                
+                // appendUserBD();
+                
+            }}
             >BD 만들기</Button>
-        
         </div>
     );
 }

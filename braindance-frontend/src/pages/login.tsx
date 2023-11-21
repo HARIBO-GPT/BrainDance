@@ -55,6 +55,7 @@ function Login(){
 
     return (
         <>
+           <div style={{height: "30vh"}} />
            <img style={{width: "35%"}} src="brain.png" />
            <h1 style={{fontWeight: "lighter"}}>브레인<b>댄스</b></h1>
 
