@@ -25,10 +25,6 @@ function App() {
     if(cachedProfileImage != null){ dispatch(setProfileImage(cachedProfileImage)) }
   }
 
-            /*
-            <Route path="/squiz/:id" element={ <Quiz userToken={userToken} userUid={userUid} /> } />
-            */
-
   return (
     <>
       <div className="App">
@@ -38,6 +34,7 @@ function App() {
             <Route path="/viewer" element={ <Viewer /> } />
             <Route path="/detail/:id" element={ <Detail /> } />
             <Route path="/append" element={ <Append /> } />
+            <Route path="/squiz/:id" element={ <Quiz /> } />
             <Route path="*" element={
               (user.userIdToken === "") ? <Navigate to="/login" /> : <Navigate to="/viewer" /> } />
           </Routes>
