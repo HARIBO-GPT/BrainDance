@@ -1,12 +1,3 @@
-.fab {
-    margin: 0px;
-    top: auto;
-    right: 0px;
-    bottom: 70px;
-    left: 0px;
-    position: fixed;
-};
-
 .elementViewer {
     -ms-overflow-style: none;
 }
