@@ -27,7 +27,7 @@ export const insertProjectRow = async (data: PostProjectObjectType): Promise<num
 export const selectProjectRow = async (): Promise<ProjectSelectRow[]> => {
     try {
         const connection: PoolConnection = await pool.getConnection();
-        const selectQuery: string = 'SELECT id, projectTitle, createdAt, keywords, uid FROM Project';
+        const selectQuery: string = 'SELECT id, projectTitle, createdAt, keywords, videoUrls, uid FROM Project';
         const [projectRows]: [ProjectSelectRow[], FieldPacket[]] = await connection.execute(selectQuery);
         connection.release();
 
@@ -54,11 +54,11 @@ export const selectProjectWhereUidRow = async (projectId: number): Promise<Proje
     }
 }
 
-export const updateProjectSummaryAndKeyword = async (summaryText: string, keywords: string, projectId: number): Promise<void> => {
+export const updateProjectSummaryAndKeywordAndVideoUrl = async (summaryText: string, keywords: string, videoUrls: string, projectId: number): Promise<void> => {
     try {
         const connection: PoolConnection = await pool.getConnection();
-        const updateQuery: string = 'UPDATE Project SET summaryText = ?, keywords = ? WHERE id = ?';
-        await connection.execute(updateQuery,[summaryText, keywords, projectId]);
+        const updateQuery: string = 'UPDATE Project SET summaryText = ?, keywords = ?, videoUrls = ? WHERE id = ?';
+        await connection.execute(updateQuery,[summaryText, keywords, videoUrls, projectId]);
         connection.release();
 
     } catch(err) {

@@ -6,7 +6,8 @@ import { parsingData } from "../openAi/parsing";
 import { insertQuiz, selectQuizs } from "../Quiz/QuizService";
 import { admin } from "../auth/firebase";
 import { chatGPT } from "../openAi/openAi";
-import { updateProjectSummaryAndKeyword } from '../Project/ProjectRepository'
+import { updateProjectSummaryAndKeywordAndVideoUrl } from '../Project/ProjectRepository'
+import { getYoutubeVideos } from "../youtube/crawling";
 
 export const postQuiz = async (req: UidRequest, res: Response): Promise<void> => {
     try {
@@ -31,7 +32,8 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
             let object: GPTObjectType = {
                 summaryText: null,
                 keyword: null,
-                quiz: []
+                quiz: [],
+                youtubeUrls: null
             }
 
             while (object.quiz.length === 0 || !(object.quiz[0].quizComment !== null)){
@@ -41,7 +43,8 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
             const responseData: GPTObjectType = {
                 summaryText: object.summaryText,
                 keyword: object.keyword,
-                quiz: object.quiz
+                quiz: object.quiz,
+                youtubeUrls: null
             }
             
             const response: ApiResponse = {
@@ -51,11 +54,13 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
             }
 
             if (typeof responseData.summaryText === 'string' && typeof responseData.keyword === 'string'){
+                const videoUrls: string = await getYoutubeVideos(responseData.keyword.split(', '));
+                responseData.youtubeUrls = videoUrls;
                 const summaryText: string = responseData.summaryText;
                 const keywords: string = responseData.keyword;
                 const projectId: number = req.body.projectId;
                 
-                await updateProjectSummaryAndKeyword(summaryText,keywords,projectId);
+                await updateProjectSummaryAndKeywordAndVideoUrl(summaryText,keywords,videoUrls,projectId);
                 // if (responseData.keyword !== null){
                 //     for (const keyword of responseData.keyword){
                 //         await insertKeywordRow(projectId, keyword);

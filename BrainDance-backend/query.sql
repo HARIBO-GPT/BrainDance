@@ -19,6 +19,7 @@ CREATE TABLE `Project` (
 	`originText` LONGTEXT NOT NULL,
 	`summaryText` LONGTEXT NULL,
     `keywords` LONGTEXT NULL,
+    `videoUrls` LONGTEXT NULL,
 	`uid` varchar(255) NOT NULL
 );
 

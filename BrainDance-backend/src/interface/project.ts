@@ -19,6 +19,7 @@ export interface ProjectSelectRow extends RowDataPacket {
     projectTitle: string
     createdAt: string
     keywords: string
+    videoUrls: string
     uid: string
 }
 

@@ -12,7 +12,7 @@ interface SearchType {
 
 const apiKey = process.env.YOUTUBE_API_KEY;
 
-export async function getYoutubeVideos(query: string[], maxResults: number = 5): Promise<string[]> {
+export async function getYoutubeVideos(query: string[], maxResults: number = 5): Promise<string> {
   const youtube = google.youtube({ version: 'v3', auth: apiKey });
   const searchQuery: string = query.join(' ');
   const response = await youtube.search.list({
@@ -27,5 +27,5 @@ export async function getYoutubeVideos(query: string[], maxResults: number = 5):
     return videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
   }) || [];
 
-  return videoUrls;
+  return videoUrls.join(', ');
 }
