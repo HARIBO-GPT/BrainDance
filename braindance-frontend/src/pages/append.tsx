@@ -1,33 +1,32 @@
-import * as React from 'react';
-import { Link, useRouteError } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Grid from '@mui/material/Grid';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
 import TextField from '@mui/material/TextField';
 
 import axios from 'axios';
 
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { RootState } from '../store';
 
-function Append(props: {userUid: string, userToken: string}){
+function Append(){
     const navigate = useNavigate();
 
-    var userUid: string = props.userUid;
-    var userAccessToken: string = props.userToken;
+    let user = useSelector<RootState>((state) => state.user);
 
-    const [topic, setTopic] = React.useState('');
-    const [rawTopic, setRawTopic] = React.useState('');
+    var userUid: string = user.userUid;
+    var userAccessToken: string = user.userToken;
 
-    const [title, setTitle] = React.useState('');
-    const [script, setScript] = React.useState('');
+    const [topic, setTopic] = useState('');
+    const [rawTopic, setRawTopic] = useState('');
+    const [title, setTitle] = useState('');
+    const [script, setScript] = useState('');
 
 
     const handleSelectChange = (event: SelectChangeEvent) => {
@@ -146,7 +145,7 @@ function Append(props: {userUid: string, userToken: string}){
 
             <div style={{height:"15px"}} />
 
-            <div style={{backgroundColor: "#bbbbd9", width: "45vh", height: "40vh", borderRadius: "30px", paddingTop:"1px"}}>
+            <div style={{backgroundColor: "#bbbbd9", width: "45vh", paddingBottom:"30px", borderRadius: "30px", paddingTop:"1px"}}>
                 <h2 style={{textAlign: "left", marginLeft: "20px"}}>스크립트를 여기에 입력하세요</h2>
 
                 <TextField
@@ -154,7 +153,7 @@ function Append(props: {userUid: string, userToken: string}){
                     fullWidth
                     multiline
                     onChange = {scriptTextFieldChange}
-                    rows={10}
+                    rows={6}
                 />
             </div>
 
