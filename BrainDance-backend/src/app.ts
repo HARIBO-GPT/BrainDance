@@ -32,4 +32,4 @@ const webServer: http.Server = app.listen(PORT, () => {
     console.log(`✅Server listenting on http://localhost:${PORT} 🚀 `)
 })
 
-socketConnect(webServer)
+socketConnect(webServer);
