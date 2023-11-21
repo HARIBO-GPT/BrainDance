@@ -9,11 +9,12 @@ import { selectUserRow } from "./UserRepository";
 
 export const getUserInfo = async (req: Request, res: Response): Promise<void> => {
     try {
+        console.time('getUserInfo');
         if (typeof req.params.uid === 'string'){
             let userInfo: UidToUserInfo = {};
             try {
                 userInfo = await admin.auth().getUser(req.params.uid);
-              } catch (err) {
+            } catch (err) {
                 const resData: ApiResponse = {
                   ok: false,
                   msg: '파이어베이스에 등록되지 않은 유저입니다.'
@@ -21,7 +22,7 @@ export const getUserInfo = async (req: Request, res: Response): Promise<void> =>
         
                 res.status(410).json(resData);
                 return;
-              }
+            }
             
             const existingUser: UserRow[] = await selectUserRow(req.params.uid);
         
@@ -43,6 +44,7 @@ export const getUserInfo = async (req: Request, res: Response): Promise<void> =>
                     googleProfilePhotoUrl: userInfo.photoURL
                 }
             }
+            console.timeEnd('getUserInfo');
             res.status(200).json(response);
             
         }
@@ -59,6 +61,7 @@ export const getUserInfo = async (req: Request, res: Response): Promise<void> =>
 
 export const postUser = async (req: UidRequest, res: Response): Promise<void> => {
     try {
+        console.time('postUser');
         if (typeof req.body.uid === 'string'){
             const uid: string = req.body.uid;
             const userInfo = await admin.auth().getUser(uid);
@@ -78,6 +81,7 @@ export const postUser = async (req: UidRequest, res: Response): Promise<void> =>
                     ok: true,
                     msg: "Successfully Post!"
                 }
+                console.timeEnd('postUser');
                 res.status(200).json(response);
                 return;
             }

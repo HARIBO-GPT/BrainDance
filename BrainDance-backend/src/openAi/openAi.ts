@@ -27,8 +27,9 @@ const convertToChatCompletionMessageParam = (message: Message): OpenAI.ChatCompl
   };
 };
 
+const format: string = "foramt : \n### 요약: {script} ### 키워드: {keyword1}, {keyword2}, {keyword3} ... ### 질문과 답변: 1. {question1} - A. {answer1} - B. {answer2} - C. {answer3} - D. {answer4} - 답변 : {answer} - 의도 : {comment} 2. {question2} - A. {answer1} - B. {answer2} - C. {answer3} - D. {answer4} - 답변 : {answer} - 의도 : {comment} ...";
+
 export const chatGPT = async (object: InputChatGPT): Promise<string> => {
-  console.log(object)
   const messages: Message[] = [
     {
       role: 'system',
@@ -39,11 +40,10 @@ export const chatGPT = async (object: InputChatGPT): Promise<string> => {
 
   object.userInput +=
     "\n### 요약:  ### 키워드: (콤마로 구분) ### 질문과 답변: (각각 넘버링) (반드시 객관식 문제로 질문) ('- 답변 :') ('- 의도 :') \n 위 템플릿에 맞춰서 해줘\n 반드시 '###'를 요약/키워드/질문과 답변 앞에 붙일 것. () 안의 조건 반드시 만족";
-  
+  object.userInput += format;
   if (object.userInput) {
     messages.push({ role: 'user', content: "Topic: " + object.category + "\n" + object.userInput });
   }
-  console.log(messages)
   
   // Convert messages to ChatCompletionMessageParam
   const chatCompletionMessages = messages.map(convertToChatCompletionMessageParam);
