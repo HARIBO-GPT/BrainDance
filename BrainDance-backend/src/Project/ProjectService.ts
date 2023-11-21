@@ -21,13 +21,14 @@ export const selectProjects = async (): Promise<GetProjectsObjectType[]> => {
         const response: GetProjectsObjectType[] = [];
         for (const projectRow of projectRows){
             const userInfo: UidToUserInfo = await admin.auth().getUser(projectRow.uid);
-            const keywords: string[] = await selectKeywordRows(projectRow.id);
+            // 요기
+            // const keywords: string[] = await selectKeywordRows(projectRow.id);
             if (typeof userInfo.displayName === 'string'){
                 const item: GetProjectsObjectType = {
                     projectId: projectRow.id,
                     projectTitle: projectRow.projectTitle,
                     createdAt: projectRow.createdAt,
-                    keyword: keywords,
+                    keyword: projectRow.keywords.split(', '),
                     displayName: userInfo.displayName
                 }
                 response.push(item);
@@ -47,7 +48,8 @@ export const selectProjectDetail = async (projectId: number): Promise<GetProject
         
         const userInfo: UidToUserInfo = await admin.auth().getUser(projectRow.uid);
         
-        const keywords: string[] = await selectKeywordRows(projectRow.id);
+        // 요기
+        // const keywords: string[] = await selectKeywordRows(projectRow.id);
         if (typeof userInfo.displayName === 'string'){
             const response: GetProjectInfoObjectType = {
                 projectId: projectRow.id,
@@ -55,7 +57,7 @@ export const selectProjectDetail = async (projectId: number): Promise<GetProject
                 createdAt: projectRow.createdAt,
                 originText: projectRow.originText,
                 summaryText: projectRow.summaryText,
-                keyword: keywords,
+                keyword: projectRow.keywords.split(', '),
                 displayName: userInfo.displayName
             }
             return response;

@@ -17,7 +17,7 @@ export const parsingData = async (processedData: string): Promise<GPTObjectType>
     const gptObject: GPTObjectType = {
         summaryText: null,
         keyword:  null,
-        quiz: null
+        quiz: []
     }
 
     const quizArray: QuizObjectType[] = [];
@@ -50,8 +50,7 @@ export const parsingData = async (processedData: string): Promise<GPTObjectType>
             summaryReady = false;
         }
         else if (keywordReady){
-            const keyword: string[] = i.split(", ");
-            gptObject.keyword = keyword;
+            gptObject.keyword = i;
             keywordReady = false;
         }
         else if (qnaReady){
