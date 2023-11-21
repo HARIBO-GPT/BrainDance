@@ -7,6 +7,7 @@ import { insertProject, selectProjects, selectProjectDetail } from '../Project/P
 
 export const postProject = async (req: UidRequest, res: Response): Promise<void> => {
     try {
+        console.time('postProject');
         if (typeof req.uid === 'string'){
             const uid: string = req.uid;
             let userInfo: UidToUserInfo = {};
@@ -47,6 +48,7 @@ export const postProject = async (req: UidRequest, res: Response): Promise<void>
                     projectId: projectId
                 }
             };
+            console.timeEnd('postProject');
             res.status(200).json(response);
 
         }
@@ -63,6 +65,7 @@ export const postProject = async (req: UidRequest, res: Response): Promise<void>
 
 export const getProjects = async (req: UidRequest, res: Response): Promise<void> => {
     try {
+        console.time('getProjects');
         if (typeof req.uid === 'string'){
             const uid: string = req.uid;
             let userInfo: UidToUserInfo = {};
@@ -86,6 +89,7 @@ export const getProjects = async (req: UidRequest, res: Response): Promise<void>
                 msg: "Successfully GET PROJECT",
                 data: data
             };
+            console.timeEnd('getProjects');
             res.status(200).json(response);
         }
     } catch(err) {
@@ -101,6 +105,7 @@ export const getProjects = async (req: UidRequest, res: Response): Promise<void>
 
 export const getProject = async (req: UidRequest, res: Response): Promise<void> => {
     try {
+        console.time('getProject');
         if (typeof req.uid === 'string'){
             const uid: string = req.uid;
             let userInfo: UidToUserInfo = {};
@@ -125,6 +130,7 @@ export const getProject = async (req: UidRequest, res: Response): Promise<void> 
                 msg: 'Successfully GET PROJECT Detail Info',
                 data: data
             };
+            console.timeEnd('getProject');
             res.status(200).json(response);
         }
     } catch(err) {

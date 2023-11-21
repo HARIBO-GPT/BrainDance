@@ -7,20 +7,20 @@ import { insertQuiz, selectQuizs } from "../Quiz/QuizService";
 import { admin } from "../auth/firebase";
 import { chatGPT } from "../openAi/openAi";
 import { updateProjectSummaryAndKeyword } from '../Project/ProjectRepository'
-import { insertKeywordRow } from "../Keyword/KeywordRepository";
 
 export const postQuiz = async (req: UidRequest, res: Response): Promise<void> => {
     try {
+        console.time('postQuiz');
         if (typeof req.uid === 'string'){
             const uid: string = req.uid;
             const userInfo = await admin.auth().getUser(uid);
             if (userInfo === undefined) {
-              const resData: ApiResponse = {
-                ok: false,
-                msg: '파이어베이스에 등록되지 않은 유저입니다.'
-              };
-              res.status(410).json(resData);
-              return;
+                const resData: ApiResponse = {
+                    ok: false,
+                    msg: '파이어베이스에 등록되지 않은 유저입니다.'
+                };
+                res.status(410).json(resData);
+                return;
             }
             console.log(req.body);
             const passedData: InputChatGPT = {
@@ -63,8 +63,6 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
                 // }
             }
 
-            
-
             if (responseData.quiz !== null){
                 const quizArray: QuizInsertObjectType[] = []
                 for (const quiz of responseData.quiz){
@@ -81,6 +79,7 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
                 await insertQuiz(quizArray);
             }
             console.log(response)
+            console.timeEnd('postQuiz');
             res.status(200).json(response);
 
         }
@@ -98,6 +97,7 @@ export const postQuiz = async (req: UidRequest, res: Response): Promise<void> =>
 
 export const getQuizs = async (req: UidRequest, res: Response): Promise<void> => {
     try {
+        console.time('getQuizs');
         if (typeof req.uid === 'string'){
             const uid: string = req.uid;
             const userInfo = await admin.auth().getUser(uid);
@@ -118,9 +118,9 @@ export const getQuizs = async (req: UidRequest, res: Response): Promise<void> =>
             ok: true,
             msg: '해당 프로젝트로 생성된 퀴즈 목록을 조회하였습니다.',
             data: data
-          };
-
-          res.status(200).json(resData);
+        };
+        console.timeEnd('getQuizs');
+        res.status(200).json(resData);
 
         }
     } catch (err) {

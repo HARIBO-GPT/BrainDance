@@ -1,6 +1,6 @@
 import { FieldPacket, type PoolConnection } from "mysql2/promise";
 import { QuizSelectObjectType, type QuizInsertObjectType } from "../interface/quiz";
-import pool from '../database/database';
+import pool from '../config/database';
 
 export const insertQuizRow = async (quiz: QuizInsertObjectType): Promise<void> => {
     try{

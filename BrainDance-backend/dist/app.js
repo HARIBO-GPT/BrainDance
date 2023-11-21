@@ -10,9 +10,11 @@ const ProjectRouter_1 = require("./Project/ProjectRouter");
 const QuizRouter_1 = require("./Quiz/QuizRouter");
 const KeywordRouter_1 = require("./Keyword/KeywordRouter");
 const cors_1 = __importDefault(require("cors"));
+const cors_2 = require("./config/cors");
+const Socket_1 = require("./Socket/Socket");
 const app = (0, express_1.default)();
 const PORT = 3000;
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)(cors_2.corsOption));
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
 app.use('/api/user', UserRouter_1.UserRouter);
@@ -22,6 +24,7 @@ app.use('/api/keyword', KeywordRouter_1.KeywordRouter);
 app.get("/test", (req, res) => {
     res.send("api connect test complete!");
 });
-app.listen(PORT, () => {
+const webServer = app.listen(PORT, () => {
     console.log(`✅Server listenting on http://localhost:${PORT} 🚀 `);
 });
+(0, Socket_1.socketConnect)(webServer);
