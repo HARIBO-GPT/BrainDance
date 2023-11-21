@@ -1,28 +1,32 @@
 import { useParams, Link } from 'react-router-dom';
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import Grid from '@mui/material/Grid';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-
 import ButtonGroup from '@mui/material/ButtonGroup';
-
 import HomeButton from '@mui/icons-material/Home';
-import Stack from '@mui/material/Stack';
-
 import Fab from '@mui/material/Fab';
 
 import '../detail.css'
+
 import axios from 'axios';
-import Home from '@mui/icons-material/Home';
 
-function Quiz(props: {userUid: string, userToken: string}){
+import { useSelector } from "react-redux";
+import { RootState } from '../store';
+
+interface quizObject {
+    quizQuestion: string;
+    quizAnswer: string;
+    quizComment: string;
+}
+
+function Quiz(){
     let {id} = useParams();
+    let user = useSelector<RootState>((state) => state.user);
 
-    var userUid: string = props.userUid;
-    var userAccessToken: string = props.userToken;
+    var userUid: string = user.userUid;
+    var userAccessToken: string = user.userIdToken;
 
     const [currentNumber, setCurrentNumber] = useState(0); // 현재 문제 번호
     const [userScore, setUserScore] = useState(0); // 유저 점수
@@ -30,18 +34,17 @@ function Quiz(props: {userUid: string, userToken: string}){
     const [objectNumber, setObjectNumber] = useState(0); // 총 문제 개수
     const [quizBool, setQuizBool] = useState(0); // 직전 퀴즈 정답 유무
 
-    const [userObjects, setUserObjects] = useState<UserObject[]>([]);
-    const [quizData, setQuizData] = useState<UserObject[]>([]);
+    const [userObjects, setUserObjects] = useState<quizObject[]>([]);
+    const [quizData, setQuizData] = useState<string[][]>([]);
 
     useEffect(() => {
-        //console.log("Hi")
         getObjectList();
-    },[]);
+    }, []);
 
     function submitAnswer(myAnswer: string){
         let answer = userObjects[currentNumber].quizAnswer.replace(')','.').split(".")[0].replace(':','').replace(/ /g, '');
-        console.log(answer)
-        console.log(myAnswer)
+        // console.log(answer)
+        // console.log(myAnswer)
         if(answer == myAnswer){
             setUserScore(userScore+1); setQuizBool(1);
         } else {
@@ -54,14 +57,10 @@ function Quiz(props: {userUid: string, userToken: string}){
     function getObjectList() {
         axios.get("http://localhost:3000/api/quiz/" + id, {
             headers: { Authorization: `Bearer ${userAccessToken}` }
-            })
-            .then((response) => {
-            //console.log(response);
+        })
+        .then((response) => {
             setUserObjects(response.data.data);
             setObjectNumber(response.data.data.length);
-            
-            //console.log(userObjects)
-            console.log(response.data.data.length)
 
             let soup = []
 
@@ -71,17 +70,13 @@ function Quiz(props: {userUid: string, userToken: string}){
                     qs.push(response.data.data[i].quizQuestion.split("\n")[j]);
                 }
 
-                soup.push(qs)
-                
+                soup.push(qs);
             }
             
-            console.log(soup)
-            setQuizData(soup)
-
-            })
-            .catch((error) => {
+            setQuizData(soup);
+        }).catch((error) => {
             console.error("Error fetching data: ", error);
-            });
+        });
     }
 
     return (
