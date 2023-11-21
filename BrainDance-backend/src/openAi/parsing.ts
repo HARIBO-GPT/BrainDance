@@ -17,7 +17,8 @@ export const parsingData = async (processedData: string): Promise<GPTObjectType>
     const gptObject: GPTObjectType = {
         summaryText: null,
         keyword:  null,
-        quiz: []
+        quiz: [],
+        youtubeUrls: null
     }
 
     const quizArray: QuizObjectType[] = [];

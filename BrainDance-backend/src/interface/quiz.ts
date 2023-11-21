@@ -9,6 +9,7 @@ export interface GPTObjectType {
     summaryText: string | null
     keyword: string | null
     quiz: QuizObjectType[]
+    youtubeUrls: string | null
 }
 
 export interface QuizObjectType {
