@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import Grid from '@mui/material/Grid';
@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import QuizIcon from '@mui/icons-material/Quiz';
 import Fab from '@mui/material/Fab';
+import Spinner from '../effects/spinner';
 
 import '../detail.css'
 
@@ -25,17 +26,25 @@ interface ProjectDetailObject {
     displayName: string
 }
 
+interface ProjectQuizObject {
+    youtubeUrls: string
+}
+
 function Detail(){
     let {id} = useParams();
     let user = useSelector<RootState>((state) => state.user);
+    const navigate = useNavigate();
 
     var userUid: string = user.userUid;
     var userAccessToken: string = user.userIdToken;
 
     const [showButton, setShowButton] = useState(0);
+    const [paraButton, setParaButton] = useState(0);
+    const [loading, setLoading] = useState(0);
 
     const [userObjects, setUserObjects] = useState<ProjectDetailObject>([]);
-
+    const [quizObjects, setQuizObjects] = useState<ProjectQuizObject>({});
+    
     useEffect(() => {
         getProjectDetail();
     }, []);
@@ -45,6 +54,15 @@ function Detail(){
             headers: { Authorization: `Bearer ${userAccessToken}` }
         }).then((response) => {
             setUserObjects(response.data.data);
+            axios.get("http://localhost:3000/api/quiz/" + id, {
+                headers: { Authorization: `Bearer ${userAccessToken}` }
+            }).then((response) => {
+                setQuizObjects(response.data.data);
+                console.log(response.data.data);
+                setLoading(1);
+            }).catch((error) => {
+
+            });
         }).catch((error) => {
             console.error("Error fetching data: ", error);
         });
@@ -52,54 +70,64 @@ function Detail(){
 
     return (
         <div>
+            { loading ? (
+            <>
             <div className="elementViewer" style={{height: "100vh", overflow: "scroll"}}>
-                <div>
-                    <Grid container style={{paddingBottom: "20px", width: "45vh", margin: "0 auto", marginTop:"20px"}}>
-                        <Grid item>
-                            <b style={{fontSize:"35px", marginRight:"10px"}}>{userObjects.projectTitle}</b>
-                        </Grid>                          
-                        <Grid item xs>                                 
-                            <Grid container direction="row-reverse">      
-                                <Grid item>
-                                    <Button variant="contained" color="secondary" style={{float:"right", marginLeft: "20px", width: "90px"}}
-                                    component={Link} to={'/viewer'}
-                                    >뒤로</Button>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+                <img src="/arrow.png" style={{width:"40px",  marginRight: "auto", marginTop: "20px", marginBottom: "10px", display: "block"}}
+                onClick={()=>{navigate("/viewer")}} />
+
+                <div style={{width: "45vh", marginBottom: "4vh"}}>
+                    <b style={{fontSize:"30px", color:"#DDDDDD"}}>{userObjects.projectTitle}</b>
                 </div>
 
                 <div style={{backgroundColor: "#bbbbd9", width: "45vh", minHeight: "25vh", borderRadius: "30px", paddingTop:"1px" ,paddingBottom: "20px", marginBottom: "20px" }}>
                     <h2 style={{textAlign: "left", marginLeft: "20px"}}>새로운 문서 요약본이에요</h2>
-                    <p className="paragraph">{userObjects.summaryText}</p>
-                    
-                    
-                    <li style={{listStyle: "none"}}>
-                        <b style={{fontSize:"20px", marginRight:"20px"}}>요약에 문제가 있나요?</b>
+                    {
+                        paraButton ? (
+                            userObjects.summaryText.split('. ').map((obj, i) => userObjects.summaryText.split('. ')[i] != "" && (
+                                <>
+                                    <li className="paragraph">{userObjects.summaryText.split('. ')[i]}</li>
+                                    <div style={{marginBottom:"5px"}} />
+                                </>
+                            ))
+                        )
                         
-                        <ButtonGroup aria-label="text button group">
-                            <Button color="secondary" onClick={()=>{setShowButton(1-showButton);}}>원본 보이기</Button>
-                            <Button color="secondary">다시 요약</Button>
-                        </ButtonGroup>
-                    </li>
+                        : <p className="paragraph">{userObjects.summaryText}</p>
+                    }
+                    <div style={{marginBottom:"20px"}} />
+                    <div style={{display:"flex", justifyContent: "center"}} >
+                    <Button color="secondary" variant="contained" style={{marginLeft: "auto", width: "110px", marginBottom: "10px", display: "block"}}
+                    onClick={()=>{setParaButton(1-paraButton);}}>{paraButton ? "문단 전체" : "보기 편하게"}</Button>
+                    <Button color="secondary" variant="contained" style={{marginLeft: "10px", marginRight: "30px", marginBottom: "10px", display: "block"}}
+                    onClick={()=>{setShowButton(1-showButton);}}>원본 {showButton ? "숨기기" : "보이기"}</Button>
+                    
+                    
+                    </div>
                     
                 </div>
 
+                <div style={{height: "10px"}} />
+
                 <Box>
-                    <Fab variant="extended" color="secondary" component={Link} to={'/squiz/' + id}>
+                    <Fab variant="extended" color="inherit" style={{width: "30vh"}} component={Link} to={'/squiz/' + id}>
                         <QuizIcon sx={{ mr: 1 }} />
-                        혼자 브레인 댄스!
+                        브레인 댄스!
                     </Fab>
                 </Box>
 
-                <div style={{height: "50px"}} />
+                <div style={{height: "30px"}} />
 
                 {
                     showButton ?
                     <div style={{backgroundColor: "#bbbbd9", width: "45vh", borderRadius: "30px", paddingTop:"1px" ,paddingBottom: "20px", marginBottom: "20px" }}>
                         <h2 style={{textAlign: "left", marginLeft: "20px"}}>원본 텍스트에요</h2>
-                        <p className="paragraph">{userObjects.originText}</p>
+                        
+                        {userObjects.originText.split('\n').map((obj, i) => userObjects.originText.split('\n')[i] != "" && (
+                            <div>
+                                <h3 style={{textAlign: "left", marginLeft: "20px", fontSize: "16px"}}>문단 {i}</h3>
+                                <p className="paragraph">{userObjects.originText.split('\n')[i]}</p>
+                            </div>
+                        ))}
                     </div>
                     
 
@@ -117,14 +145,27 @@ function Detail(){
                     }
                 </div>
 
+                <h2 style={{fontSize:"25px", color:"#DDDDDD", textAlign: "left", marginLeft: "5px"}}>관련 영상을 찾았어요</h2>
                 
-
                 
 
                 <div style={{paddingBottom: "100px"}} />
                 
             </div>
-
+            </>
+            ) : 
+            <>
+                <div>
+                    <div style={{height: "10vh"}} />
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <Spinner />
+                    </div>
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <p style={{color: "white"}}>정보를 가져오고 있어요</p>
+                    </div>
+                </div>
+            </>
+            }
             
         </div>
     );
