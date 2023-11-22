@@ -21,11 +21,28 @@ export async function getYoutubeVideos(query: string[], maxResults: number = 5):
     type: 'video',
     maxResults: maxResults
   } as any);
-
+  
   const videoUrls: string[] = response.data.items?.map((item) => {
     const videoId = item.id?.videoId;
     return videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
   }) || [];
+  
+  if (videoUrls.length === 0) {
+    const response2 = await youtube.search.list({
+      q: [query[0]],
+      part: 'id,snippet',
+      type: 'video',
+      maxResults: maxResults
+    } as any);
 
-  return videoUrls.join(', ');
+    const videoUrls2: string[] = response2.data.items?.map((item) => {
+      const videoId = item.id?.videoId;
+      return videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
+    }) || [];
+
+    return videoUrls2.join(', ');
+  }
+  else {
+    return videoUrls.join(', ');
+  }
 }
