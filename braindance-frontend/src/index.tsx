@@ -12,13 +12,14 @@ import store from './store'
 
 const theme = createTheme({
   palette: {
-    primary: { main: "#ffd69e" },
-    secondary: { main: "#ffcc00" }
+    primary: {
+      main: "#4475e9"
+    }
   },
   typography: {
     button: {
       textTransform: 'none',
-      fontWeight: "bold"
+      fontFamily: "Dovemayo_gothic"
     }
   }
 })
