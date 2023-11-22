@@ -30,6 +30,7 @@ export interface GetProjectInfoObjectType {
     originText: string
     summaryText: string
     keyword: string[]
+    videoUrls: string[]
     displayName: string
 }
 

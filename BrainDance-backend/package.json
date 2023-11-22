@@ -24,6 +24,7 @@
     "dotenv": "^16.3.1",
     "event-target-shim": "^6.0.2",
     "express": "^4.18.2",
+    "firebase": "^10.6.0",
     "firebase-admin": "^11.11.0",
     "googleapis": "^128.0.0",
     "mysql2": "^3.6.3",
@@ -35,9 +36,9 @@
   "scripts": {
     "build": "rimraf dist && npx tsc",
     "prestart": "npm run build",
-    "start": "node dist/app.js",
+    "start": "node --inspect  --max-old-space-size=12000 dist/app.js",
     "preserve": "npm run build",
-    "serve": "concurrently \"npx tsc -w\" \"nodemon dist/app.js\""
+    "serve": "concurrently \"npx tsc -w\" \"nodemon --inspect --max-old-space-size=12000 dist/app.js\""
   },
   "keywords": [],
   "author": "haramj",

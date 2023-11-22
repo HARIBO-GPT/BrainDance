@@ -24,14 +24,26 @@ export const selectProjects = async (): Promise<GetProjectsObjectType[]> => {
             // 요기
             // const keywords: string[] = await selectKeywordRows(projectRow.id);
             if (typeof userInfo.displayName === 'string'){
-                const item: GetProjectsObjectType = {
-                    projectId: projectRow.id,
-                    projectTitle: projectRow.projectTitle,
-                    createdAt: projectRow.createdAt,
-                    keyword: projectRow.keywords.split(', '),
-                    displayName: userInfo.displayName
+                if (projectRow.keywords === null) {
+                    const item: GetProjectsObjectType = {
+                        projectId: projectRow.id,
+                        projectTitle: projectRow.projectTitle,
+                        createdAt: projectRow.createdAt,
+                        keyword: [''],
+                        displayName: userInfo.displayName
+                    }
+                    response.push(item);
                 }
-                response.push(item);
+                else {
+                    const item: GetProjectsObjectType = {
+                        projectId: projectRow.id,
+                        projectTitle: projectRow.projectTitle,
+                        createdAt: projectRow.createdAt,
+                        keyword: projectRow.keywords.split(', '),
+                        displayName: userInfo.displayName
+                    }
+                    response.push(item);
+                }
             }
         }
         return response;
@@ -58,6 +70,7 @@ export const selectProjectDetail = async (projectId: number): Promise<GetProject
                 originText: projectRow.originText,
                 summaryText: projectRow.summaryText,
                 keyword: projectRow.keywords.split(', '),
+                videoUrls: projectRow.videoUrls.split(', '),
                 displayName: userInfo.displayName
             }
             return response;

@@ -1,5 +1,6 @@
 import { google } from 'googleapis';
 import dotenv from 'dotenv';
+import { youtubeAnalytics } from 'googleapis/build/src/apis/youtubeAnalytics';
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const apiKey = process.env.YOUTUBE_API_KEY;
 
 export async function getYoutubeVideos(query: string[], maxResults: number = 5): Promise<string> {
   const youtube = google.youtube({ version: 'v3', auth: apiKey });
+  console.log(youtube);
   const searchQuery: string = query.join(' ');
   const response = await youtube.search.list({
     q: searchQuery,
@@ -27,5 +29,22 @@ export async function getYoutubeVideos(query: string[], maxResults: number = 5):
     return videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
   }) || [];
 
-  return videoUrls.join(', ');
+  if (videoUrls.length === 0) {
+    const response2 = await youtube.search.list({
+      q: [query[0]],
+      part: 'id,snippet',
+      type: 'video',
+      maxResults: maxResults
+    } as any);
+
+    const videoUrls2: string[] = response2.data.items?.map((item) => {
+      const videoId = item.id?.videoId;
+      return videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
+    }) || [];
+
+    return videoUrls2.join(', ');
+  }
+  else {
+    return videoUrls.join(', ');
+  }
 }
