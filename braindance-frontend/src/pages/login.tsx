@@ -55,21 +55,27 @@ function Login(){
 
     return (
         <>
-           <img style={{width: "35%"}} src="brain.png" />
-           <h1 style={{fontWeight: "lighter"}}>브레인<b>댄스</b></h1>
-
-
-           <h3>분산된 학습자료를 한번에 정리하자!</h3>
-
-            <div>
-              <p>"지금 로그인하고 나만의 학습 비서를 찾으세요"</p>
+            <img src="background.jpg" style={{width:"50vh", borderRadius: "50px"}} />
+            
+            <div style={{display:"flex", justifyContent: "center", alignItems: "center", margin: "0 auto"}}>
+                <h1 style={{color: "#FAFAFA", fontWeight: "lighter", paddingRight: "12px"}}>Start your</h1>
+                <h1 style={{color: "#FAFAFA"}}>BrainDance</h1>
             </div>
 
-            <Button 
-            variant="contained"
-            
+            <div style={{display:"flex", justifyContent: "center", alignItems: "center", margin: "0 auto"}}>
+                <img src="paper.png" style={{width:"30px", paddingRight: "12px"}} />
+                <p style={{color:"white"}}>복잡한 학습자료를 하나의 문서로 요약해요</p>
+            </div>
+
+            <div style={{display:"flex", justifyContent: "center", alignItems: "center", margin: "0 auto"}}>
+                <img src="idea.png" style={{width:"30px", paddingRight: "12px"}} />
+                <p style={{color:"white"}}>퀴즈, 영상 등 컨텐츠가 자동으로 추가돼요</p>
+            </div>
+
+            <br/>
+            <p style={{color: "white", fontWeight: "bold"}}>지금 시작하면 완벽할 것 같아요! 🚀</p>
+            <Button variant="contained" style={{width:"30vh", height:"5vh", fontSize:"17px", fontWeight:"bold", borderRadius: "15px"}}
             onClick={handleGoogleLogin}
-            
             >Google로 로그인</Button>
         </>
     )
